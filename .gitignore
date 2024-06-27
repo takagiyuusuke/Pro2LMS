@@ -8,4 +8,4 @@
 *.nar
 hs_err_pid*
 
-/database
+/data
