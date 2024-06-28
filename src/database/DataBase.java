@@ -27,6 +27,11 @@ abstract class DataBase {
 		}
 	}
 	
+	static void addLine(BufferedWriter w, String newLineVal) throws IOException{
+		w.write(newLineVal);
+		w.newLine();
+	}
+	
 	protected String getItem(int col_index, String value) {
 		try {
 			List<String> allItems = Files.readAllLines(Paths.get(this.fileName), Charset.defaultCharset());
@@ -68,8 +73,7 @@ abstract class DataBase {
 		try {
 			// FileWriter(this.fileName, true) <- able to append lines.
 			BufferedWriter writer = new BufferedWriter(new FileWriter(this.fileName, true));
-			writer.write(value);
-			writer.newLine();
+			DataBase.addLine(writer, value);
 			writer.close();
 		} catch(IOException e) {
 			e.printStackTrace();
@@ -90,12 +94,11 @@ abstract class DataBase {
 				String item = line.next();
 				String[] properties = item.split(",");
 				if (properties[0].equals(Integer.toString(id))) {
-					writer.write(newVal);
+					DataBase.addLine(writer, newVal);
 					isSuccess = true;
 				} else {
-					writer.write(item);
+					DataBase.addLine(writer, item);
 				}
-				writer.newLine();
 			}
 			writer.close();
 		} catch(IOException e) {
@@ -115,8 +118,7 @@ abstract class DataBase {
 					headers += ",";
 				}
 			}
-			writer.write(headers);
-			writer.newLine();
+			DataBase.addLine(writer, headers);
 			writer.close();
 		} catch(IOException e) {
 			e.printStackTrace();
