@@ -1,13 +1,13 @@
 package entities;
 
 public class Course {
-	protected int id;
-	protected String name;
-	protected int roomId;
-	protected String day;
-	protected int period;
-	protected int teacherId;
-	protected int[] studentIds;
+	private int id;
+	private String name;
+	private int roomId;
+	private String day;
+	private int period;
+	private int teacherId;
+	private int[] studentIds;
 	
 	public Course(String item) {
 		String[] properties = item.split(",");
