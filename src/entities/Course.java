@@ -6,8 +6,8 @@ public class Course {
 	protected int roomId;
 	protected String day;
 	protected int period;
-	protected int[] studentIds;
 	protected int teacherId;
+	protected int[] studentIds;
 	
 	public Course(String item) {
 		String[] properties = item.split(",");
@@ -40,5 +40,13 @@ public class Course {
 		studentIdsStr += "]";
 		return id + "," + name + "," + studentIdsStr;
 	}
+	
+	public int getId() {return id;}
+	public String getName() {return name;}
+	public int getRoomId() {return roomId;}
+	public String getDay() {return day;}
+	public int getPeriod() {return period;}
+	public int getTeacherId() {return teacherId;}
+	public int[] getStudentIds() {return studentIds;}
 }
 
