@@ -6,7 +6,7 @@ import entities.Student;;
 public class StudentDB extends DataBase {
 	final private static List<String> HEADERS = new ArrayList<String>(Arrays.asList("id", "name", "courseIds"));
 	final private static String ENTITY_NAME = "students";
-	final private static Map<String, Integer> HEADER_COL_INDICES =  new HashMap<>();
+	final private Map<String, Integer> HEADER_COL_INDICES =  new HashMap<>();
 	
 	public StudentDB() {
 		super(ENTITY_NAME, HEADERS);
