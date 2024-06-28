@@ -21,7 +21,8 @@ public class Student {
 		}
 	}
 	
-	public String convertToString() {
+	// split list item with " "
+	public String convertToDBRawString() {
 		String courseIdsStr = "[";
 		for (int i=0; i<courseIds.length; i++) {
 			courseIdsStr += Integer.toString(courseIds[i]);
