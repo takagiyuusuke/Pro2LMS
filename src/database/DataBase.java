@@ -66,6 +66,7 @@ abstract class DataBase {
 	
 	protected boolean addItem(String value) {
 		try {
+			// FileWriter(this.fileName, true) <- able to append lines.
 			BufferedWriter writer = new BufferedWriter(new FileWriter(this.fileName, true));
 			writer.write(value);
 			writer.newLine();
