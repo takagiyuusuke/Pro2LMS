@@ -1,9 +1,11 @@
 package entities;
 
+import java.util.ArrayList;
+
 abstract public class People {
-	public int id;
-	public String name;
-	public int[] courseIds;
+	private int id;
+	private String name;
+	private ArrayList<Integer> courseIds;
 	
 	protected People(String item) {
 		String[] properties = item.split(",");
@@ -14,22 +16,34 @@ abstract public class People {
 		if (courseIdsStr.length == 1 && courseIdsStr[0].equals("")) {
 			courseIdsStr = new String[0]; 
 		}
-		this.courseIds = new int[courseIdsStr.length];
+		this.courseIds = new ArrayList<Integer>();
 		for (int i=0; i < courseIdsStr.length; i++) {
-			courseIds[i] = Integer.valueOf(courseIdsStr[i]);
+			courseIds.add(Integer.valueOf(courseIdsStr[i]));
 		}
 	}
 	
 	// split list item with " "
 	public String convertToDBRawString() {
 		String courseIdsStr = "[";
-		for (int i=0; i<courseIds.length; i++) {
-			courseIdsStr += Integer.toString(courseIds[i]);
-			if (i != courseIds.length - 1) {
+		for (int i=0; i<courseIds.size(); i++) {
+			courseIdsStr += Integer.toString(courseIds.get(i));
+			if (i != courseIds.size() - 1) {
 				courseIdsStr += " ";
 			}
 		}
 		courseIdsStr += "]";
 		return id + "," + name + "," + courseIdsStr;
 	}
+	
+	public int getId() {return id;}
+	public String getName() {return name;}
+	public ArrayList<Integer> getCourseIds() {return courseIds;}
+	
+	public void addCourseId (int newCourseId){
+		courseIds.add(newCourseId);
+	}
+	public boolean removeCourseId (int removeCourseId) {
+		return courseIds.remove(Integer.valueOf(removeCourseId));
+	}
+	
 }
