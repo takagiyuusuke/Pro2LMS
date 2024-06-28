@@ -9,7 +9,7 @@ public class Course {
 	protected int[] studentIds;
 	protected int teacherId;
 	
-	protected Course(String item) {
+	public Course(String item) {
 		String[] properties = item.split(",");
 		this.id = Integer.valueOf(properties[0]);
 		this.name = properties[1];
