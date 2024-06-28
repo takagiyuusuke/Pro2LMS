@@ -57,5 +57,11 @@ public class Course {
 	public boolean removeStudentId (int removeStudentId) {
 		return studentIds.remove(Integer.valueOf(removeStudentId));
 	}
+	
+	public void changeName(String newName) {name = newName;}
+	public void changeRoomId(int newRoomId) {roomId = newRoomId;}
+	public void changeDay(String newDay) {day = newDay;}
+	public void changePeriod(int newPeriod) {period = newPeriod;}
+	public void changeTeacherId(int newTeacherId) {teacherId = newTeacherId;}
 }
 
