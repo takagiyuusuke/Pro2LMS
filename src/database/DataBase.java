@@ -27,7 +27,7 @@ abstract class DataBase {
 		}
 	}
 	
-	static void addLine(BufferedWriter w, String newLineVal) throws IOException{
+	private static void addLine(BufferedWriter w, String newLineVal) throws IOException{
 		w.write(newLineVal);
 		w.newLine();
 	}
