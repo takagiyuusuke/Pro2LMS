@@ -1,5 +1,7 @@
 package entities;
 
+import java.util.ArrayList;
+
 public class Course {
 	private int id;
 	private String name;
@@ -7,7 +9,7 @@ public class Course {
 	private String day;
 	private int period;
 	private int teacherId;
-	private int[] studentIds;
+	private ArrayList<Integer> studentIds;
 	
 	public Course(String item) {
 		String[] properties = item.split(",");
@@ -22,18 +24,18 @@ public class Course {
 		if (studentIdsStr.length == 1 && studentIdsStr[0].equals("")) {
 			studentIdsStr = new String[0]; 
 		}
-		this.studentIds = new int[studentIdsStr.length];
+		this.studentIds = new ArrayList<Integer>();
 		for (int i=0; i < studentIdsStr.length; i++) {
-			studentIds[i] = Integer.valueOf(studentIdsStr[i]);
+			studentIds.add(Integer.valueOf(studentIdsStr[i]));
 		}
 	}
 		
 	// split list item with " "
 	public String convertToDBRawString() {
 		String studentIdsStr = "[";
-		for (int i=0; i<studentIds.length; i++) {
-			studentIdsStr += Integer.toString(studentIds[i]);
-			if (i != studentIds.length - 1) {
+		for (int i=0; i<studentIds.size(); i++) {
+			studentIdsStr += Integer.toString(studentIds.get(i));
+			if (i != studentIds.size() - 1) {
 				studentIdsStr += " ";
 			}
 		}
@@ -47,6 +49,13 @@ public class Course {
 	public String getDay() {return day;}
 	public int getPeriod() {return period;}
 	public int getTeacherId() {return teacherId;}
-	public int[] getStudentIds() {return studentIds;}
+	public ArrayList<Integer> getStudentIds() {return studentIds;}
+	
+	public void addStudentId (int newStudentId){
+		studentIds.add(newStudentId);
+	}
+	public boolean removeStudentId (int removeStudentId) {
+		return studentIds.remove(Integer.valueOf(removeStudentId));
+	}
 }
 
