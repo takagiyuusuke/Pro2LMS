@@ -35,15 +35,15 @@ abstract public class People {
 		return id + "," + name + "," + courseIdsStr;
 	}
 	
-	public int getId() {return id;}
-	public String getName() {return name;}
-	public ArrayList<Integer> getCourseIds() {return courseIds;}
+	public int getId() {return this.id;}
+	public String getName() {return this.name;}
+	public ArrayList<Integer> getCourseIds() {return this.courseIds;}
 	
 	public void addCourseId (int newCourseId){
-		courseIds.add(newCourseId);
+		this.courseIds.add(newCourseId);
 	}
 	public boolean removeCourseId (int removeCourseId) {
-		return courseIds.remove(Integer.valueOf(removeCourseId));
+		return this.courseIds.remove(Integer.valueOf(removeCourseId));
 	}
 	
 }

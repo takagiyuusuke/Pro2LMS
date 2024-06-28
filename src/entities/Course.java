@@ -40,28 +40,28 @@ public class Course {
 			}
 		}
 		studentIdsStr += "]";
-		return id + "," + name + "," + studentIdsStr;
+		return id + "," + name + "," + roomId + "," + day + "," + period + "," + teacherId + "," + studentIdsStr;
 	}
 	
-	public int getId() {return id;}
-	public String getName() {return name;}
-	public int getRoomId() {return roomId;}
-	public String getDay() {return day;}
-	public int getPeriod() {return period;}
-	public int getTeacherId() {return teacherId;}
-	public ArrayList<Integer> getStudentIds() {return studentIds;}
+	public int getId() {return this.id;}
+	public String getName() {return this.name;}
+	public int getRoomId() {return this.roomId;}
+	public String getDay() {return this.day;}
+	public int getPeriod() {return this.period;}
+	public int getTeacherId() {return this.teacherId;}
+	public ArrayList<Integer> getStudentIds() {return this.studentIds;}
 	
 	public void addStudentId (int newStudentId){
-		studentIds.add(newStudentId);
+		this.studentIds.add(newStudentId);
 	}
 	public boolean removeStudentId (int removeStudentId) {
-		return studentIds.remove(Integer.valueOf(removeStudentId));
+		return this.studentIds.remove(Integer.valueOf(removeStudentId));
 	}
 	
-	public void changeName(String newName) {name = newName;}
-	public void changeRoomId(int newRoomId) {roomId = newRoomId;}
-	public void changeDay(String newDay) {day = newDay;}
-	public void changePeriod(int newPeriod) {period = newPeriod;}
-	public void changeTeacherId(int newTeacherId) {teacherId = newTeacherId;}
+	public void changeName(String newName) {this.name = newName;}
+	public void changeRoomId(int newRoomId) {this.roomId = newRoomId;}
+	public void changeDay(String newDay) {this.day = newDay;}
+	public void changePeriod(int newPeriod) {this.period = newPeriod;}
+	public void changeTeacherId(int newTeacherId) {this.teacherId = newTeacherId;}
 }
 
