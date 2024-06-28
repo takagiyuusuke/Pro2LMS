@@ -13,10 +13,10 @@ public class Course {
 		String[] properties = item.split(",");
 		this.id = Integer.valueOf(properties[0]);
 		this.name = properties[1];
-		this.roomId = properties[2];
+		this.roomId = Integer.valueOf(properties[2]);
 		this.day = properties[3];
-		this.period = properties[4];
-		this.teacherId = properties[5];
+		this.period = Integer.valueOf(properties[4]);
+		this.teacherId = Integer.valueOf(properties[5]);
 		String studentIdsContent = properties[6].substring(1, properties[6].length()-1);
 		String[] studentIdsStr = studentIdsContent.split("\\s+");
 		if (studentIdsStr.length == 1 && studentIdsStr[0].equals("")) {
