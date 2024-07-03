@@ -12,7 +12,7 @@ public class Main {
 		studentDB.createStudent(62210974, "seno koki");
 		studentDB.createStudent(62210975, "takagi yusuke");
 		studentDB.createStudent(62210976, "nakamoto koichi");
-		courseDB.createCourse(100, "Programing2nd", 999, "Friday", 3, 111112);
+		courseDB.createCourse(100, "Programing2nd", "A32", "Friday", 3, 111112);
 		
 		teacherDB.createTeacher(111111, "tanaka syozo");
 		teacherDB.createTeacher(111112, "takada shingo");

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Course {
 	private int id;
 	private String name;
-	private int roomId;
+	private String roomName;
 	private String day;
 	private int period;
 	private int teacherId;
@@ -15,7 +15,7 @@ public class Course {
 		String[] properties = item.split(",");
 		this.id = Integer.valueOf(properties[0]);
 		this.name = properties[1];
-		this.roomId = Integer.valueOf(properties[2]);
+		this.roomName = properties[2];
 		this.day = properties[3];
 		this.period = Integer.valueOf(properties[4]);
 		this.teacherId = Integer.valueOf(properties[5]);
@@ -40,7 +40,7 @@ public class Course {
 			}
 		}
 		studentIdsStr += "]";
-		return id + "," + name + "," + roomId + "," + day + "," + period + "," + teacherId + "," + studentIdsStr;
+		return id + "," + name + "," + roomName + "," + day + "," + period + "," + teacherId + "," + studentIdsStr;
 	}
 	
 	public int getId() {return this.id;}
@@ -48,8 +48,8 @@ public class Course {
 	public String getName() {return this.name;}
 	public void setName(String newName) {this.name = newName;}
 
-	public int getRoomId() {return this.roomId;}
-	public void setRoomId(int newRoomId) {this.roomId = newRoomId;}
+	public String getRoomId() {return this.roomName;}
+	public void setRoomId(String newRoomName) {this.roomName = newRoomName;}
 
 	public String getDay() {return this.day;}
 	public void setDay(String newDay) {this.day = newDay;}
