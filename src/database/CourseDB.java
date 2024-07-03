@@ -32,4 +32,12 @@ public class CourseDB extends DataBase {
 			return null;
 		}
 	}
+	
+	public Course updateCourse(Course course) {
+		if (super.updateItem(course.getId(), course.convertToDBRawString())) {
+			return course;
+		} else {
+			return null;
+		}
+	}
 }

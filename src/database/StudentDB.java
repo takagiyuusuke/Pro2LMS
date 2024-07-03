@@ -28,4 +28,12 @@ public class StudentDB extends DataBase {
 			return null;
 		}
 	}
+	
+	public Student updateStudent(Student student) {
+		if (super.updateItem(student.getId(), student.convertToDBRawString())) {
+			return student;
+		} else {
+			return null;
+		}
+	}
 }
