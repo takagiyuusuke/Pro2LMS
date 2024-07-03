@@ -44,13 +44,23 @@ public class Course {
 	}
 	
 	public int getId() {return this.id;}
+
 	public String getName() {return this.name;}
+	public void setName(String newName) {this.name = newName;}
+
 	public int getRoomId() {return this.roomId;}
+	public void setRoomId(int newRoomId) {this.roomId = newRoomId;}
+
 	public String getDay() {return this.day;}
+	public void setDay(String newDay) {this.day = newDay;}
+
 	public int getPeriod() {return this.period;}
+	public void setPeriod(int newPeriod) {this.period = newPeriod;}
+
 	public int getTeacherId() {return this.teacherId;}
+	public void setTeacherId(int newTeacherId) {this.teacherId = newTeacherId;}
+
 	public ArrayList<Integer> getStudentIds() {return this.studentIds;}
-	
 	public void addStudentId (int newStudentId){
 		this.studentIds.add(newStudentId);
 	}
@@ -58,10 +68,8 @@ public class Course {
 		return this.studentIds.remove(Integer.valueOf(removeStudentId));
 	}
 	
-	public void changeName(String newName) {this.name = newName;}
-	public void changeRoomId(int newRoomId) {this.roomId = newRoomId;}
-	public void changeDay(String newDay) {this.day = newDay;}
-	public void changePeriod(int newPeriod) {this.period = newPeriod;}
+
+	
 	public void changeTeacherId(int newTeacherId) {this.teacherId = newTeacherId;}
 }
 
