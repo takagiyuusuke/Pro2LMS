@@ -20,6 +20,11 @@ public class Main {
 		Student koki = studentDB.getStudentById(62210974);
 		System.out.println("name: "+koki.getName()+", id: "+koki.getId());
 		
+		koki.setName("koki dayo");
+		studentDB.updateStudent(koki);
+		Student newKoki = studentDB.getStudentById(62210974);
+		System.out.println("name: "+newKoki.getName()+", id: "+newKoki.getId());
+		
 		Teacher tanaka = teacherDB.getTeacherById(111111);
 		System.out.println("name: "+tanaka.getName()+", id: "+tanaka.getId());
 		
