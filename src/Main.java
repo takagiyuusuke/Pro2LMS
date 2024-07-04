@@ -38,7 +38,7 @@ public class Main {
 				asg.waitForClose();
 			} catch (InterruptedException e) {
 				System.out.println("something wrong!!");
-			}
+			} 
 		
 			AddTeacherGUI atg = new AddTeacherGUI(teacherDB);
 			try {

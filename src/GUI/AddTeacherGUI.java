@@ -141,7 +141,7 @@ public class AddTeacherGUI {
 		public void changedUpdate(DocumentEvent e) {
 			onTextChanged(e);
 		}
-
+ 
 		private void onTextChanged(DocumentEvent e) {
 			nameCheck();
 			teacherIdCheck();

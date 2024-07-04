@@ -35,7 +35,7 @@ public class ListDisplayGUI {
 			if (student != null) {
 				students.add(student);
 			}
-		}
+		} 
 		
 		DefaultTableModel model = new DefaultTableModel(columnNames, 0);
 		for (Student student : students) {
