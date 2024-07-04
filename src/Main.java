@@ -39,6 +39,20 @@ public class Main {
 			} catch (InterruptedException e) {
 				System.out.println("something wrong!!");
 			}
+		
+			AddTeacherGUI atg = new AddTeacherGUI(teacherDB);
+			try {
+				atg.waitForClose();
+			} catch (InterruptedException e) {
+				System.out.println("something wrong!!");
+			}
+			
+			ListDisplayGUI ldg = new ListDisplayGUI(studentDB);
+			try {
+				ldg.waitForClose();
+			} catch (InterruptedException e) {
+				System.out.println("something wrong!!");
+			}
 		}
 	}
 }
