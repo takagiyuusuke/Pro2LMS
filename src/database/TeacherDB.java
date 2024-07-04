@@ -33,4 +33,12 @@ public class TeacherDB extends DataBase {
 			return null;
 		}
 	}
+	
+	public Teacher updateTeacher(Teacher teacher) {
+		if (super.updateItem(teacher.getId(), teacher.convertToDBRawString())) {
+			return teacher;
+		} else {
+			return null;
+		}
+	}
 }
