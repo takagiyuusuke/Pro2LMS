@@ -36,9 +36,13 @@ abstract public class People {
 	}
 	
 	public int getId() {return this.id;}
-	public String getName() {return this.name;}
-	public ArrayList<Integer> getCourseIds() {return this.courseIds;}
 	
+	public String getName() {return this.name;}
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public ArrayList<Integer> getCourseIds() {return this.courseIds;}
 	public void addCourseId (int newCourseId){
 		this.courseIds.add(newCourseId);
 	}
