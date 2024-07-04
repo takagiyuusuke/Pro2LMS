@@ -26,42 +26,42 @@ public class AddStudentGUI {
 
 	public AddStudentGUI(StudentDB studentDB) {
 		this.studentDB = studentDB;
-		initUI();
+		this.initUI();
 	}
 
 	private void initUI() {
-		button.setEnabled(false);
+		this.button.setEnabled(false);
 		
-		nameField.getDocument().addDocumentListener(listener);
-		studentIdField.getDocument().addDocumentListener(listener);
+		this.nameField.getDocument().addDocumentListener(this.listener);
+		this.studentIdField.getDocument().addDocumentListener(this.listener);
 		
 		ButtonAction buttonListener = new ButtonAction();
-		button.addActionListener(buttonListener);
+		this.button.addActionListener(buttonListener);
 		
 		JPanel namePane = new JPanel();
 		namePane.setLayout(new GridLayout(1, 0));
 		namePane.add(new JLabel("Enter Name:"));
-		namePane.add(nameField);
+		namePane.add(this.nameField);
 		
 		JPanel studentIdPane = new JPanel();
 		studentIdPane.setLayout(new GridLayout(1, 0));
 		studentIdPane.add(new JLabel("Enter Student ID:"));
-		studentIdPane.add(studentIdField);
+		studentIdPane.add(this.studentIdField);
 		
 		JPanel pane = new JPanel();
 		pane.setBorder(BorderFactory.createEmptyBorder(30, 30, 10, 30));
 		pane.setLayout(new GridLayout(0, 1));
 		pane.add(namePane);
-		pane.add(errlabel);
+		pane.add(this.errlabel);
 		pane.add(studentIdPane);
-		pane.add(errlabel2);
-		pane.add(button);
+		pane.add(this.errlabel2);
+		pane.add(this.button);
 		
-		frame.getContentPane().add(pane, BorderLayout.CENTER);
-		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		frame.setSize(400, 300);
+		this.frame.getContentPane().add(pane, BorderLayout.CENTER);
+		this.frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		this.frame.setSize(400, 300);
 		
-		frame.addWindowListener(new WindowAdapter() {
+		this.frame.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosed(WindowEvent e) {
 				synchronized (AddStudentGUI.this) {
@@ -71,7 +71,7 @@ public class AddStudentGUI {
 			}
 		});
 
-		frame.setVisible(true);
+		this.frame.setVisible(true);
 	}
 
 	class ButtonAction implements ActionListener {
@@ -84,45 +84,45 @@ public class AddStudentGUI {
 	private void nameCheck() {
 		String newName = nameField.getText();
 		if (newName.length() == 0) {
-			errlabel.setText("name should have at least 1 letter!");
-			errlabel.setForeground(Color.red);
-			nameIsOk = false;
+			this.errlabel.setText("name should have at least 1 letter!");
+			this.errlabel.setForeground(Color.red);
+			this.nameIsOk = false;
 		} else if (newName.length() >= 20) {
-			errlabel.setText("name should be shorter than 20 letters!");
-			errlabel.setForeground(Color.red);
-			nameIsOk = false;
+			this.errlabel.setText("name should be shorter than 20 letters!");
+			this.errlabel.setForeground(Color.red);
+			this.nameIsOk = false;
 		} else if (!newName.matches("[a-zA-Z\\s]*")) {
-			errlabel.setText("name should have only alphabets and space!");
-			errlabel.setForeground(Color.red);
-			nameIsOk = false;
+			this.errlabel.setText("name should have only alphabets and space!");
+			this.errlabel.setForeground(Color.red);
+			this.nameIsOk = false;
 		} else {
-			errlabel.setText("there are no problem with name!");
-			errlabel.setForeground(Color.blue);
-			name = newName;
-			nameIsOk = true;
+			this.errlabel.setText("there are no problem with name!");
+			this.errlabel.setForeground(Color.blue);
+			this.name = newName;
+			this.nameIsOk = true;
 		}
 	}
 
 	private void studentIdCheck() {
-		String newidString = studentIdField.getText();
+		String newidString = this.studentIdField.getText();
 		int newid;
 		try {
 			newid = Integer.valueOf(newidString);
 		} catch (Exception ex) {
-			errlabel2.setText("student ID should have numbers!");
-			errlabel2.setForeground(Color.red);
-			studentIdIsOk = false;
+			this.errlabel2.setText("student ID should have numbers!");
+			this.errlabel2.setForeground(Color.red);
+			this.studentIdIsOk = false;
 			return;
 		}
 		if (newidString.length() != 8) {
-			errlabel2.setText("student ID should have 8 digits!");
-			errlabel2.setForeground(Color.red);
-			studentIdIsOk = false;
+			this.errlabel2.setText("student ID should have 8 digits!");
+			this.errlabel2.setForeground(Color.red);
+			this.studentIdIsOk = false;
 		} else {
-			errlabel2.setText("there are no problem with student ID!");
-			errlabel2.setForeground(Color.blue);
-			studentId = newid;
-			studentIdIsOk = true;
+			this.errlabel2.setText("there are no problem with student ID!");
+			this.errlabel2.setForeground(Color.blue);
+			this.studentId = newid;
+			this.studentIdIsOk = true;
 		}
 	}
 
@@ -153,7 +153,7 @@ public class AddStudentGUI {
 	TextFieldDocumentListener listener = new TextFieldDocumentListener();
 
 	public synchronized void waitForClose() throws InterruptedException {
-		while (!frameClosed) {
+		while (!this.frameClosed) {
 			wait();
 		}
 	}
