@@ -7,6 +7,7 @@ public class CourseDB extends DataBase {
 	final private static List<String> HEADERS = new ArrayList<String>(Arrays.asList("id", "name", "roomName", "day", "period", "teacherId", "studentIds"));
 	final private static String ENTITY_NAME = "courses";
 	final private Map<String, Integer> HEADER_COL_INDICES =  new HashMap<>();
+	private static int LATEST_ID = 0;
 	
 	public CourseDB() {
 		super(ENTITY_NAME, HEADERS);
@@ -17,6 +18,12 @@ public class CourseDB extends DataBase {
 		HEADER_COL_INDICES.put("period", 4);
 		HEADER_COL_INDICES.put("teacherId", 5);
 		HEADER_COL_INDICES.put("studentIds", 6);
+		
+		String lastItem = this.getLastItem();
+		if (!lastItem.startsWith("id")) {
+			String idStr = lastItem.split(",")[0];
+			LATEST_ID = Integer.valueOf(idStr);
+		}
 	}
 	
 	public Course getCourseById(int id) {
@@ -33,9 +40,10 @@ public class CourseDB extends DataBase {
 		return allCourses;
 	}
 	
-	public Course createCourse(int id, String name, String roomName, String day, int period, int teacherId) {
-		String itemStr = id + "," + name + "," + roomName + "," + day + "," + period + "," + teacherId + "," + "[]";
+	public Course createCourse(String name, String roomName, String day, int period, int teacherId) {
+		String itemStr = (LATEST_ID + 1) + "," + name + "," + roomName + "," + day + "," + period + "," + teacherId + "," + "[]";
 		if (super.addItem(itemStr)) {
+			LATEST_ID++;
 			return new Course(itemStr);
 		} else {
 			return null;
