@@ -36,47 +36,27 @@ public class AddCoursePane extends JPanel {
 
         namePane.setOnTextChanged((String s) -> {
             this.name = s;
-            if (this.isOk()) {
-                button.setEnabled(true);
-            } else {
-                button.setEnabled(false);
-            }
+            this.enableButtonIfOk();
         });
         
         roomNamePane.setOnTextChanged((String s) -> {
         	this.roomName = s;
-        	if (this.isOk()) {
-                button.setEnabled(true);
-            } else {
-                button.setEnabled(false);
-            }
+        	this.enableButtonIfOk();
         });
         
         dayPane.setOnTextChanged((String s) -> {
         	this.day = s;
-        	if (this.isOk()) {
-                button.setEnabled(true);
-            } else {
-                button.setEnabled(false);
-            }
+        	this.enableButtonIfOk();
         });
         
         periodPane.setOnTextChanged((Integer period) -> {
         	this.period = period;
-        	if (this.isOk()) {
-                button.setEnabled(true);
-            } else {
-                button.setEnabled(false);
-            }
+        	this.enableButtonIfOk();
         });
 
         idPane.setOnTextChanged((Integer id) -> {
             this.teacherId = id;
-            if (this.isOk()) {
-                button.setEnabled(true);
-            } else {
-                button.setEnabled(false);
-            }
+            this.enableButtonIfOk();
         });
 
         this.setBorder(BorderFactory.createEmptyBorder(30, 30, 10, 30));
@@ -98,6 +78,14 @@ public class AddCoursePane extends JPanel {
     			&& this.dayPane.isOk()
     			&& this.periodPane.isOk()
     			&& this.idPane.isOk();
+    }
+    
+    private void enableButtonIfOk() {
+    	if (this.isOk()) {
+    		this.button.setEnabled(true);
+    	} else {
+    		this.button.setEnabled(false);
+    	}
     }
     
     public void reset() {
