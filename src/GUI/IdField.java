@@ -48,7 +48,7 @@ public class IdField extends JPanel {
 		return this.isOk;
 	}
 	
-	private boolean idCheck() {
+	private void idCheck() {
 		String newidString = this.idField.getText();
 		try {
 			this.id = Integer.valueOf(newidString);
@@ -56,18 +56,15 @@ public class IdField extends JPanel {
 			this.errlabel.setText("student ID should have numbers!");
 			this.errlabel.setForeground(Color.red);
 			this.isOk = false;
-			return false;
 		}
 		if (newidString.length() != 8) {
 			this.errlabel.setText("student ID should have 8 digits!");
 			this.errlabel.setForeground(Color.red);
 			this.isOk = false;
-			return false;
 		} else {
 			this.errlabel.setText("there are no problem with student ID!");
 			this.errlabel.setForeground(Color.blue);
 			this.isOk = true;
-			return true;
 		}
 	}
 
@@ -88,10 +85,8 @@ public class IdField extends JPanel {
 		}
 
 		private void onTextChanged(DocumentEvent e) {
-			if (idCheck()) {
-				IdField.this.onTextChanged.accept(IdField.this.getId());
-			}
-			
+			idCheck();
+			IdField.this.onTextChanged.accept(IdField.this.getId());	
 		}
 	}
 
