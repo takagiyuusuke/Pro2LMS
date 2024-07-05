@@ -53,13 +53,17 @@ public class AddStudentPane extends JPanel {
         this.add(idPane);
         this.add(this.button);
     }
+    
+    public void reset() {
+    	this.namePane.reset();
+        this.idPane.reset();
+        this.button.setEnabled(false);
+    }
 
     class ButtonAction implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             studentDB.createStudent(studentId, name);
-            AddStudentPane.this.namePane.deleteText();
-            AddStudentPane.this.idPane.deleteText();
-            AddStudentPane.this.button.setEnabled(false);
+            AddStudentPane.this.reset();
         }
     }
 }
