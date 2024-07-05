@@ -1,21 +1,21 @@
 package GUI;
 
 import javax.swing.*;
-import database.StudentDB;
+import database.TeacherDB;
 import java.awt.*;
 import java.awt.event.*;
 
-public class AddStudentPane {
+public class AddTeacherPane {
 
     private String name;
-    private int studentId;
-    private JButton button = new JButton("Add Student");
-    private StudentDB studentDB;
+    private int teacherId;
+    private JButton button = new JButton("Add Teacher");
+    private TeacherDB teacherDB;
     private NameField namePane;
     private IdField idPane;
 
-    public AddStudentPane(StudentDB studentDB) {
-        this.studentDB = studentDB;
+    public AddTeacherPane(TeacherDB teacherDB) {
+        this.teacherDB = teacherDB;
     }
 
     public JPanel createPane() {
@@ -25,7 +25,7 @@ public class AddStudentPane {
         this.button.addActionListener(buttonListener);
 
         namePane = new NameField("Enter Name");
-        idPane = new IdField("Enter Student ID");
+        idPane = new IdField("Enter Teacher ID");
 
         namePane.setOnTextChanged((String s) -> {
             this.name = s;
@@ -37,7 +37,7 @@ public class AddStudentPane {
         });
 
         idPane.setOnTextChanged((Integer id) -> {
-            this.studentId = id;
+            this.teacherId = id;
             if (namePane.isOk() && idPane.isOk()) {
                 button.setEnabled(true);
             } else {
@@ -48,7 +48,7 @@ public class AddStudentPane {
         JPanel pane = new JPanel();
         pane.setBorder(BorderFactory.createEmptyBorder(30, 30, 10, 30));
         pane.setLayout(new GridLayout(0, 1));
-        pane.add(new JLabel("Add Student"));
+        pane.add(new JLabel("Add Teacher"));
         pane.add(namePane);
         pane.add(idPane);
         pane.add(this.button);
@@ -58,10 +58,10 @@ public class AddStudentPane {
 
     class ButtonAction implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            studentDB.createStudent(studentId, name);
-            AddStudentPane.this.namePane.deleteText();
-            AddStudentPane.this.idPane.deleteText();
-            AddStudentPane.this.button.setEnabled(false);
+            teacherDB.createTeacher(teacherId, name);
+            AddTeacherPane.this.namePane.deleteText();
+            AddTeacherPane.this.idPane.deleteText();
+            AddTeacherPane.this.button.setEnabled(false);
         }
     }
 

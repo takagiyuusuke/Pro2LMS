@@ -4,6 +4,7 @@ import java.awt.*;
 import javax.swing.*;
 
 import database.StudentDB;
+import database.TeacherDB;
 
 import java.awt.event.*;
 
@@ -29,10 +30,11 @@ public class GUIMain extends JFrame implements ActionListener{
         panel01.add(btn01);
 
         // panel02
-        JPanel panel02 = new JPanel();
-        panel02.setBackground(Color.DARK_GRAY);
-        JButton btn02 = new JButton("panel02");
-        panel02.add(btn02);
+//        JPanel panel02 = new JPanel();
+//        panel02.setBackground(Color.DARK_GRAY);
+        TeacherDB tdb = new TeacherDB();
+        JPanel panel02 = (new AddTeacherPane(tdb)).createPane();
+//        panel02.add(btn02);
 
         // panel03
 //        JPanel panel03 = new JPanel();
@@ -52,15 +54,15 @@ public class GUIMain extends JFrame implements ActionListener{
         cardPanel.add(panel03, "panel03");
 
         // カード移動用ボタン
-        JButton firstButton = new JButton("panel01");
+        JButton firstButton = new JButton("Home");
         firstButton.addActionListener(this);
         firstButton.setActionCommand("panel01");
 
-        JButton secondButton = new JButton("panel02");
+        JButton secondButton = new JButton("Add Teacher");
         secondButton.addActionListener(this);
         secondButton.setActionCommand("panel02");
 
-        JButton thirdButton = new JButton("panel03");
+        JButton thirdButton = new JButton("Add Student");
         thirdButton.addActionListener(this);
         thirdButton.setActionCommand("panel03");
 
