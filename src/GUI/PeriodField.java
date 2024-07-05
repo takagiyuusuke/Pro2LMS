@@ -63,7 +63,7 @@ public class PeriodField extends JPanel {
 			this.errlabel.setForeground(Color.red);
 			this.isOk = false;
 		}
-		if (this.period >= 1 && this.period <= 6) {
+		if (!(this.period >= 1 && this.period <= 6)) {
 			this.errlabel.setText("Period should be in 1~6!");
 			this.errlabel.setForeground(Color.red);
 			this.isOk = false;

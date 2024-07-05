@@ -51,7 +51,7 @@ public class DayField extends JPanel {
 	
 	private void inputCheck() {
 		String newDay = dayField.getText();
-		if (newDay.matches("Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday")) {
+		if (!newDay.matches("Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday")) {
 			this.errlabel.setText("day shoud match 'Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday'");
 			this.errlabel.setForeground(Color.red);
 			this.isOk = false;
