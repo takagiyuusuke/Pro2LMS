@@ -24,13 +24,13 @@ public class CourseDB extends DataBase {
 		return new Course(item);
 	}
 	
-	public List<Course> getAllCourse() {
-		List<String> allCourseString = super.getAllItems();
-		List<Course> allCourse = new ArrayList<Course>();
-		for (int i = 0; i < allCourseString.size(); i ++) {
-			allCourse.add(new Course(allCourseString.get(i)));
+	public List<Course> getAllCourses() {
+		List<String> allCourseStrings = super.getAllItems();
+		List<Course> allCourses = new ArrayList<Course>();
+		for (int i = 0; i < allCourseStrings.size(); i ++) {
+			allCourses.add(new Course(allCourseStrings.get(i)));
 		}
-		return allCourse;
+		return allCourses;
 	}
 	
 	public Course createCourse(int id, String name, String roomName, String day, int period, int teacherId) {

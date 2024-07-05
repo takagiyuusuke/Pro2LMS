@@ -20,13 +20,13 @@ public class StudentDB extends DataBase {
 		return new Student(item);
 	}
 	
-	public List<Student> getAllStudent() {
-		List<String> allStudentString = super.getAllItems();
-		List<Student> allStudent = new ArrayList<Student>();
-		for (int i = 0; i < allStudentString.size(); i ++) {
-			allStudent.add(new Student(allStudentString.get(i)));
+	public List<Student> getAllStudents() {
+		List<String> allStudentStrings = super.getAllItems();
+		List<Student> allStudents = new ArrayList<Student>();
+		for (int i = 0; i < allStudentStrings.size(); i ++) {
+			allStudents.add(new Student(allStudentStrings.get(i)));
 		}
-		return allStudent;
+		return allStudents;
 	}
 	
 	public Student createStudent(int id, String name) {
