@@ -69,6 +69,22 @@ abstract class DataBase {
 		return results;
 	}
 	
+	protected List<String> getAllItems() {
+		List<String> results = new ArrayList<String>();
+		try {
+			List<String> allItems = Files.readAllLines(Paths.get(this.fileName), Charset.defaultCharset());
+			Iterator<String> itr = allItems.iterator();
+			itr.next();
+			for (Iterator<String> line = itr; line.hasNext();) {
+				String item = line.next();
+				results.add(item);
+			}
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+		return results;
+	}
+	
 	protected boolean addItem(String value) {
 		try {
 			// FileWriter(this.fileName, true) <- able to append lines.
