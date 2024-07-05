@@ -24,6 +24,15 @@ public class CourseDB extends DataBase {
 		return new Course(item);
 	}
 	
+	public List<Course> getAllCourse() {
+		List<String> allCourseString = super.getAllItems();
+		List<Course> allCourse = new ArrayList<Course>();
+		for (int i = 0; i < allCourseString.size(); i ++) {
+			allCourse.add(new Course(allCourseString.get(i)));
+		}
+		return allCourse;
+	}
+	
 	public Course createCourse(int id, String name, String roomName, String day, int period, int teacherId) {
 		String itemStr = id + "," + name + "," + roomName + "," + day + "," + period + "," + teacherId + "," + "[]";
 		if (super.addItem(itemStr)) {

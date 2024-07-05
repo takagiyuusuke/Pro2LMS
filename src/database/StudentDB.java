@@ -20,6 +20,15 @@ public class StudentDB extends DataBase {
 		return new Student(item);
 	}
 	
+	public List<Student> getAllStudent() {
+		List<String> allStudentString = super.getAllItems();
+		List<Student> allStudent = new ArrayList<Student>();
+		for (int i = 0; i < allStudentString.size(); i ++) {
+			allStudent.add(new Student(allStudentString.get(i)));
+		}
+		return allStudent;
+	}
+	
 	public Student createStudent(int id, String name) {
 		String itemStr = id + "," + name + "," + "[]";
 		if (super.addItem(itemStr)) {
