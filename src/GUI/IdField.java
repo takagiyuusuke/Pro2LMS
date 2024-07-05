@@ -48,6 +48,12 @@ public class IdField extends JPanel {
 		return this.isOk;
 	}
 	
+
+	public void deleteText() {
+		this.idField.setText("");
+		this.errlabel.setText("");
+	}
+	
 	private void idCheck() {
 		String newidString = this.idField.getText();
 		try {

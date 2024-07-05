@@ -43,6 +43,12 @@ public class NameField extends JPanel {
 		return this.isOk;
 	}
 	
+
+	public void deleteText() {
+		this.nameField.setText("");
+		this.errlabel.setText("");
+	}
+	
 	private void nameCheck() {
 		String newName = nameField.getText();
 		if (newName.length() == 0) {
