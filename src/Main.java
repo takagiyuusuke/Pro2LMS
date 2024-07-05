@@ -35,7 +35,7 @@ public class Main {
 		Course pro2 = courseDB.getCourseById(100);
 		System.out.println("name: "+pro2.getName()+", id: "+pro2.getId()+", roomId: "+pro2.getRoomId()+", day: "+pro2.getDay()+", period: "+pro2.getPeriod()+", Teacherid: "+teacherDB.getTeacherById(pro2.getTeacherId()).getName());
 		
-		List<Student> s = studentDB.getAllStudent();
+		List<Student> s = studentDB.getAllStudents();
 		for (int i = 0; i < s.size(); i ++) {
 			System.out.println(s.get(i).getName());
 		}
