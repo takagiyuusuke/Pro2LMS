@@ -5,13 +5,11 @@ import javax.swing.*;
 
 import database.StudentDB;
 import database.TeacherDB;
+import database.CourseDB;
 
 import java.awt.event.*;
 
 public class GUIMain {
-	private StudentDB studentDB;
-	private TeacherDB teacherDB;
-	
 	private JFrame frame = new JFrame("Pro2LMS");
 	private boolean frameClosed = false;
 
@@ -21,28 +19,32 @@ public class GUIMain {
     final private String HomePaneName = "Home";
     final private String AddStudentPaneName = "AddStudentPane";
     final private String AddTeacherPaneName = "AddTeacherPane";
+    final private String AddCoursePaneName = "AddCoursePane";
     
-    public GUIMain(StudentDB studentDB, TeacherDB teacherDB) {
-    	this.studentDB = studentDB;
-    	this.teacherDB = teacherDB;
+    private AddStudentPane addStudentPane;
+    private AddTeacherPane addTeacherPane;
+    private AddCoursePane addCoursePane;
+    
+    public GUIMain(StudentDB studentDB, TeacherDB teacherDB, CourseDB courseDB) {
+    	this.addStudentPane = new AddStudentPane(studentDB);
+    	this.addTeacherPane = new AddTeacherPane(teacherDB);
+    	this.addCoursePane = new AddCoursePane(courseDB);
     	this.Exec();
     }
-
+    
     public void Exec () {
     	
     	JPanel HomePane = new JPanel();
-        AddTeacherPane addTeacherPane = new AddTeacherPane(this.teacherDB);
-        AddStudentPane addStudentPane = new AddStudentPane(this.studentDB);
 
         // CardLayout
         cardPanel = new JPanel();
         layout = new CardLayout();
         cardPanel.setLayout(layout);
-        cardPanel.setSize(400, 300);
 
         cardPanel.add(HomePane, this.HomePaneName);
         cardPanel.add(addTeacherPane, this.AddTeacherPaneName);
         cardPanel.add(addStudentPane, this.AddStudentPaneName);
+        cardPanel.add(addCoursePane, this.AddCoursePaneName);
 
         // card transitions
         JButton homeButton = new JButton("Home");
@@ -57,11 +59,16 @@ public class GUIMain {
         JButton addStudentButton = new JButton("Add Student");
         addStudentButton.addActionListener(transitionButtonAction);
         addStudentButton.setActionCommand(this.AddStudentPaneName);
+        
+        JButton addCourseButton = new JButton("Add Course");
+        addCourseButton.addActionListener(transitionButtonAction);
+        addCourseButton.setActionCommand(this.AddCoursePaneName);
 
         JPanel btnPanel = new JPanel();
         btnPanel.add(homeButton);
         btnPanel.add(addTeacherButton);
         btnPanel.add(addStudentButton);
+        btnPanel.add(addCourseButton);
 
         Container contentPane = this.frame.getContentPane();
         contentPane.add(cardPanel, BorderLayout.CENTER);
@@ -89,6 +96,10 @@ public class GUIMain {
 	    public void actionPerformed(ActionEvent e) {
 	        String cmd = e.getActionCommand();
 	        layout.show(cardPanel, cmd);
+	        
+	        GUIMain.this.addStudentPane.reset();
+	        GUIMain.this.addTeacherPane.reset();
+	        GUIMain.this.addCoursePane.reset();
 	    }
     }
     
