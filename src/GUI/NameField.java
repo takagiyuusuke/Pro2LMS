@@ -44,7 +44,7 @@ public class NameField extends JPanel {
 	}
 	
 
-	public void deleteText() {
+	public void reset() {
 		this.nameField.setText("");
 		this.errlabel.setText("");
 	}

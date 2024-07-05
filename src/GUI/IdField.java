@@ -49,7 +49,7 @@ public class IdField extends JPanel {
 	}
 	
 
-	public void deleteText() {
+	public void reset() {
 		this.idField.setText("");
 		this.errlabel.setText("");
 	}
