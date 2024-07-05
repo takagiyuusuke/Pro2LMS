@@ -44,7 +44,7 @@ public class NameField extends JPanel {
 	}
 	
 
-	public void deleteText() {
+	public void reset() {
 		this.nameField.setText("");
 		this.errlabel.setText("");
 	}
@@ -59,8 +59,8 @@ public class NameField extends JPanel {
 			this.errlabel.setText("name should be shorter than 20 letters!");
 			this.errlabel.setForeground(Color.red);
 			this.isOk = false;
-		} else if (!newName.matches("[a-zA-Z\\s]*")) {
-			this.errlabel.setText("name should have only alphabets and space!");
+		} else if (!newName.matches("[a-zA-Z0-9\\s]*")) {
+			this.errlabel.setText("name should have only alphabets, numbers and space!");
 			this.errlabel.setForeground(Color.red);
 			this.isOk = false;
 		} else {
