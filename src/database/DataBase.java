@@ -91,6 +91,8 @@ abstract class DataBase {
 			return allItems.get(allItems.size() - 1);
 		} catch(IOException e) {
 			e.printStackTrace();
+		} catch(IndexOutOfBoundsException e) {
+			e.printStackTrace();
 		}
 		return null;
 	}

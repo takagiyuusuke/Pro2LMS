@@ -2,12 +2,14 @@ package database;
 
 import java.util.*;
 import entities.Course;
+import entities.Teacher;
 
 public class CourseDB extends DataBase {
 	final private static List<String> HEADERS = new ArrayList<String>(Arrays.asList("id", "name", "roomName", "day", "period", "teacherId", "studentIds"));
 	final private static String ENTITY_NAME = "courses";
 	final private Map<String, Integer> HEADER_COL_INDICES =  new HashMap<>();
 	private static int LATEST_ID = 0;
+	private TeacherDB teacherDB;
 	
 	public CourseDB() {
 		super(ENTITY_NAME, HEADERS);
@@ -26,6 +28,10 @@ public class CourseDB extends DataBase {
 		}
 	}
 	
+	public void setTeacherDB(TeacherDB teacherDB) {
+		this.teacherDB = teacherDB;
+	}
+	
 	public Course getCourseById(int id) {
 		String item = super.getItem(HEADER_COL_INDICES.get("id"), Integer.toString(id));
 		return new Course(item);
@@ -41,8 +47,12 @@ public class CourseDB extends DataBase {
 	}
 	
 	public Course createCourse(String name, String roomName, String day, int period, int teacherId) {
-		String itemStr = (LATEST_ID + 1) + "," + name + "," + roomName + "," + day + "," + period + "," + teacherId + "," + "[]";
+		int newId = LATEST_ID + 1;
+		String itemStr = newId + "," + name + "," + roomName + "," + day + "," + period + "," + teacherId + "," + "[]";
 		if (super.addItem(itemStr)) {
+			Teacher teacher = this.teacherDB.getTeacherById(teacherId);
+			teacher.addCourseId(newId);
+			this.teacherDB.updateTeacher(teacher);
 			LATEST_ID++;
 			return new Course(itemStr);
 		} else {
