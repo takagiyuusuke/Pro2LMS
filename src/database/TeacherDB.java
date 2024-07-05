@@ -25,6 +25,15 @@ public class TeacherDB extends DataBase {
 		return new Teacher(item);
 	}
 	
+	public List<Teacher> getAllTeachers() {
+		List<String> allTeacherStrings = super.getAllItems();
+		List<Teacher> allTeachers = new ArrayList<Teacher>();
+		for (int i = 0; i < allTeacherStrings.size(); i ++) {
+			allTeachers.add(new Teacher(allTeacherStrings.get(i)));
+		}
+		return allTeachers;
+	}
+	
 	public Teacher createTeacher(int id, String name) {
 		String itemStr = id + "," + name + "," + "[]";
 		if (super.addItem(itemStr)) {
