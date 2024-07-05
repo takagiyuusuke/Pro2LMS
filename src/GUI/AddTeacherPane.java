@@ -5,7 +5,8 @@ import database.TeacherDB;
 import java.awt.*;
 import java.awt.event.*;
 
-public class AddTeacherPane {
+@SuppressWarnings("serial")
+public class AddTeacherPane extends JPanel {
 
     private String name;
     private int teacherId;
@@ -15,12 +16,10 @@ public class AddTeacherPane {
     private IdField idPane;
 
     public AddTeacherPane(TeacherDB teacherDB) {
+    	super();
         this.teacherDB = teacherDB;
-    }
-
-    public JPanel createPane() {
-        this.button.setEnabled(false);
         
+        this.button.setEnabled(false);
         ButtonAction buttonListener = new ButtonAction();
         this.button.addActionListener(buttonListener);
 
@@ -45,15 +44,14 @@ public class AddTeacherPane {
             }
         });
 
-        JPanel pane = new JPanel();
-        pane.setBorder(BorderFactory.createEmptyBorder(30, 30, 10, 30));
-        pane.setLayout(new GridLayout(0, 1));
-        pane.add(new JLabel("Add Teacher"));
-        pane.add(namePane);
-        pane.add(idPane);
-        pane.add(this.button);
-
-        return pane;
+        this.setBorder(BorderFactory.createEmptyBorder(30, 30, 10, 30));
+        this.setLayout(new GridLayout(0, 1));
+        JPanel labelPane = new JPanel();
+        labelPane.add(new JLabel("Add Teacher"));
+        this.add(labelPane);
+        this.add(namePane);
+        this.add(idPane);
+        this.add(this.button);
     }
 
     class ButtonAction implements ActionListener {
@@ -63,9 +61,5 @@ public class AddTeacherPane {
             AddTeacherPane.this.idPane.deleteText();
             AddTeacherPane.this.button.setEnabled(false);
         }
-    }
-
-    public JPanel getPane() {
-        return createPane();
     }
 }

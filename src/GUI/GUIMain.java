@@ -8,78 +8,93 @@ import database.TeacherDB;
 
 import java.awt.event.*;
 
-public class GUIMain extends JFrame implements ActionListener{
+public class GUIMain {
+	private StudentDB studentDB;
+	private TeacherDB teacherDB;
+	
+	private JFrame frame = new JFrame("Pro2LMS");
+	private boolean frameClosed = false;
 
-    JPanel cardPanel;
-    CardLayout layout;
-
-    public static void main(String[] args) {
-        GUIMain frame = new GUIMain();
-        frame.setTitle("画面遷移テスト");
-        frame.setSize(900, 600);
-        frame.setLocationRelativeTo(null);
-        frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        frame.setVisible(true);
+    private JPanel cardPanel;
+    private CardLayout layout;
+    
+    final private String HomePaneName = "Home";
+    final private String AddStudentPaneName = "AddStudentPane";
+    final private String AddTeacherPaneName = "AddTeacherPane";
+    
+    public GUIMain(StudentDB studentDB, TeacherDB teacherDB) {
+    	this.studentDB = studentDB;
+    	this.teacherDB = teacherDB;
+    	this.Exec();
     }
 
-    public GUIMain() {
+    public void Exec () {
+    	
+    	JPanel HomePane = new JPanel();
+        AddTeacherPane addTeacherPane = new AddTeacherPane(this.teacherDB);
+        AddStudentPane addStudentPane = new AddStudentPane(this.studentDB);
 
-        // panel01
-        JPanel panel01 = new JPanel();
-        JButton btn01 = new JButton("panel01");
-        panel01.add(btn01);
-
-        // panel02
-//        JPanel panel02 = new JPanel();
-//        panel02.setBackground(Color.DARK_GRAY);
-        TeacherDB tdb = new TeacherDB();
-        JPanel panel02 = (new AddTeacherPane(tdb)).createPane();
-//        panel02.add(btn02);
-
-        // panel03
-//        JPanel panel03 = new JPanel();
-//        panel03.setBackground(Color.LIGHT_GRAY);
-        StudentDB sdb = new StudentDB();
-        JPanel panel03 = (new AddStudentPane(sdb)).createPane();
-//        JButton btn03 = new JButton("panel03");
-//        panel03.add(btn03);
-
-        // CardLayout用パネル
+        // CardLayout
         cardPanel = new JPanel();
         layout = new CardLayout();
         cardPanel.setLayout(layout);
+        cardPanel.setSize(400, 300);
 
-        cardPanel.add(panel01, "panel01");
-        cardPanel.add(panel02, "panel02");
-        cardPanel.add(panel03, "panel03");
+        cardPanel.add(HomePane, this.HomePaneName);
+        cardPanel.add(addTeacherPane, this.AddTeacherPaneName);
+        cardPanel.add(addStudentPane, this.AddStudentPaneName);
 
-        // カード移動用ボタン
-        JButton firstButton = new JButton("Home");
-        firstButton.addActionListener(this);
-        firstButton.setActionCommand("panel01");
+        // card transitions
+        JButton homeButton = new JButton("Home");
+        TransitionButtonAction transitionButtonAction = new TransitionButtonAction();
+        homeButton.addActionListener(transitionButtonAction);
+        homeButton.setActionCommand(this.HomePaneName);
 
-        JButton secondButton = new JButton("Add Teacher");
-        secondButton.addActionListener(this);
-        secondButton.setActionCommand("panel02");
+        JButton addTeacherButton = new JButton("Add Teacher");
+        addTeacherButton.addActionListener(transitionButtonAction);
+        addTeacherButton.setActionCommand(this.AddTeacherPaneName);
 
-        JButton thirdButton = new JButton("Add Student");
-        thirdButton.addActionListener(this);
-        thirdButton.setActionCommand("panel03");
+        JButton addStudentButton = new JButton("Add Student");
+        addStudentButton.addActionListener(transitionButtonAction);
+        addStudentButton.setActionCommand(this.AddStudentPaneName);
 
         JPanel btnPanel = new JPanel();
-        btnPanel.add(firstButton);
-        btnPanel.add(secondButton);
-        btnPanel.add(thirdButton);
+        btnPanel.add(homeButton);
+        btnPanel.add(addTeacherButton);
+        btnPanel.add(addStudentButton);
 
-        // cardPanelとカード移動用ボタンをJFrameに配置
-        Container contentPane = getContentPane();
+        Container contentPane = this.frame.getContentPane();
         contentPane.add(cardPanel, BorderLayout.CENTER);
         contentPane.add(btnPanel, BorderLayout.PAGE_END);
+        
+        this.frame.setTitle("Pro2LMS");
+        this.frame.setSize(900, 600);
+        this.frame.setLocationRelativeTo(null);
+        this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        this.frame.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosed(WindowEvent e) {
+				synchronized (this) {
+					GUIMain.this.frameClosed = true;
+					GUIMain.this.notify();
+				}
+			}
+		});
+        
+        this.frame.setVisible(true);
     }
-
-    public void actionPerformed(ActionEvent e) {
-        String cmd = e.getActionCommand();
-
-        layout.show(cardPanel, cmd);
+    
+    class TransitionButtonAction implements ActionListener {    	
+	    public void actionPerformed(ActionEvent e) {
+	        String cmd = e.getActionCommand();
+	        layout.show(cardPanel, cmd);
+	    }
     }
+    
+    public synchronized void waitForClose() throws InterruptedException {
+		while (!this.frameClosed) {
+			wait();
+		}
+	}
 }

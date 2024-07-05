@@ -13,21 +13,17 @@ public class Main {
 		studentDB.clear();
 		teacherDB.clear();
 		courseDB.clear();
+
 		studentDB.createStudent(62210974, "seno koki");
 		studentDB.createStudent(62210975, "takagi yusuke");
 		studentDB.createStudent(62210976, "nakamoto koichi");
 		courseDB.createCourse(100, "Programing2nd", "A32", "Friday", 3, 111112);
-		
+
 		teacherDB.createTeacher(111111, "tanaka syozo");
 		teacherDB.createTeacher(111112, "takada shingo");
-		
+
 		Student koki = studentDB.getStudentById(62210974);
 		System.out.println("name: "+koki.getName()+", id: "+koki.getId());
-		
-		koki.setName("koki dayo");
-		studentDB.updateStudent(koki);
-		Student newKoki = studentDB.getStudentById(62210974);
-		System.out.println("name: "+newKoki.getName()+", id: "+newKoki.getId());
 		
 		Teacher tanaka = teacherDB.getTeacherById(111111);
 		System.out.println("name: "+tanaka.getName()+", id: "+tanaka.getId());
@@ -41,25 +37,11 @@ public class Main {
 		}
 		
 		while(true) {
-			AddStudentGUI asg = new AddStudentGUI(studentDB);
+			GUIMain gui = new GUIMain(studentDB, teacherDB);
 			try {
-				asg.waitForClose();
+				gui.waitForClose();
 			} catch (InterruptedException e) {
-				System.out.println("something wrong!!");
-			} 
-		
-			AddTeacherGUI atg = new AddTeacherGUI(teacherDB);
-			try {
-				atg.waitForClose();
-			} catch (InterruptedException e) {
-				System.out.println("something wrong!!");
-			}
-			
-			ListDisplayGUI ldg = new ListDisplayGUI(studentDB);
-			try {
-				ldg.waitForClose();
-			} catch (InterruptedException e) {
-				System.out.println("something wrong!!");
+				e.printStackTrace();
 			}
 		}
 	}
