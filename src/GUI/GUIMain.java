@@ -5,6 +5,9 @@ import javax.swing.*;
 
 import database.StudentDB;
 import database.TeacherDB;
+import GUI.page.AddCoursePane;
+import GUI.page.AddStudentPane;
+import GUI.page.AddTeacherPane;
 import database.CourseDB;
 
 import java.awt.event.*;
@@ -28,7 +31,7 @@ public class GUIMain {
     public GUIMain(StudentDB studentDB, TeacherDB teacherDB, CourseDB courseDB) {
     	this.addStudentPane = new AddStudentPane(studentDB);
     	this.addTeacherPane = new AddTeacherPane(teacherDB);
-    	this.addCoursePane = new AddCoursePane(courseDB);
+    	this.addCoursePane = new AddCoursePane(courseDB, teacherDB);
     	this.Exec();
     }
     

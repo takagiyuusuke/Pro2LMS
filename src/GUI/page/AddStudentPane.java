@@ -1,30 +1,33 @@
-package GUI;
+package GUI.page;
 
 import javax.swing.*;
-import database.TeacherDB;
+
+import GUI.components.IdField;
+import GUI.components.NameField;
+import database.StudentDB;
 import java.awt.*;
 import java.awt.event.*;
 
 @SuppressWarnings("serial")
-public class AddTeacherPane extends JPanel {
+public class AddStudentPane extends JPanel {
 
     private String name;
-    private int teacherId;
-    private JButton button = new JButton("Add Teacher");
-    private TeacherDB teacherDB;
+    private int studentId;
+    private JButton button = new JButton("Add Student");
+    private StudentDB studentDB;
     private NameField namePane;
     private IdField idPane;
 
-    public AddTeacherPane(TeacherDB teacherDB) {
+    public AddStudentPane(StudentDB studentDB) {
     	super();
-        this.teacherDB = teacherDB;
-        
+        this.studentDB = studentDB;
+
         this.button.setEnabled(false);
         ButtonAction buttonListener = new ButtonAction();
         this.button.addActionListener(buttonListener);
 
         namePane = new NameField("Enter Name");
-        idPane = new IdField("Enter Teacher ID");
+        idPane = new IdField("Enter Student ID");
 
         namePane.setOnTextChanged((String s) -> {
             this.name = s;
@@ -36,7 +39,7 @@ public class AddTeacherPane extends JPanel {
         });
 
         idPane.setOnTextChanged((Integer id) -> {
-            this.teacherId = id;
+            this.studentId = id;
             if (namePane.isOk() && idPane.isOk()) {
                 button.setEnabled(true);
             } else {
@@ -47,7 +50,7 @@ public class AddTeacherPane extends JPanel {
         this.setBorder(BorderFactory.createEmptyBorder(30, 30, 10, 30));
         this.setLayout(new GridLayout(0, 1));
         JPanel labelPane = new JPanel();
-        labelPane.add(new JLabel("Add Teacher"));
+        labelPane.add(new JLabel("Add Student"));
         this.add(labelPane);
         this.add(namePane);
         this.add(idPane);
@@ -62,8 +65,8 @@ public class AddTeacherPane extends JPanel {
 
     class ButtonAction implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            teacherDB.createTeacher(teacherId, name);
-            AddTeacherPane.this.reset();
+            studentDB.createStudent(studentId, name);
+            AddStudentPane.this.reset();
         }
     }
 }

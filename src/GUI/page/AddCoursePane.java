@@ -1,6 +1,18 @@
-package GUI;
+package GUI.page;
 import javax.swing.*;
+
+import GUI.components.DayField;
+import GUI.components.NameField;
+import GUI.components.PeopleSelect;
+import GUI.components.PeriodField;
 import database.CourseDB;
+import database.TeacherDB;
+import entities.Teacher;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -14,49 +26,60 @@ public class AddCoursePane extends JPanel {
 
     private JButton button = new JButton("Add Course");
     private CourseDB courseDB;
+    private TeacherDB teacherDB;
     private NameField namePane;
     private NameField roomNamePane;
     private DayField dayPane;
     private PeriodField periodPane;
-    private IdField idPane;
+    private PeopleSelect teacherSelectPane;
 
-    public AddCoursePane(CourseDB courseDB) {
+    public AddCoursePane(CourseDB courseDB, TeacherDB teacherDB) {
     	super();
         this.courseDB = courseDB;
+        this.teacherDB = teacherDB;
 
         this.button.setEnabled(false);
         ButtonAction buttonListener = new ButtonAction();
         this.button.addActionListener(buttonListener);
 
-        namePane = new NameField("Enter Name");
-        roomNamePane = new NameField("Enter Room Name");
-        dayPane = new DayField("Enter Day");
-        periodPane = new PeriodField("Etner Period");
-        idPane = new IdField("Enter Teacher ID");
+        this.namePane = new NameField("Enter Name");
+        this.roomNamePane = new NameField("Enter Room Name");
+        this.dayPane = new DayField("Enter Day");
+        this.periodPane = new PeriodField("Etner Period");
 
-        namePane.setOnTextChanged((String s) -> {
+        List<Teacher> allTeachers = this.teacherDB.getAllTeachers();
+        List<String> allTeacherNames = new ArrayList<String>();
+        Map<String, Integer> teacherNameIdMap = new HashMap<>();
+        allTeachers.forEach((Teacher t) -> {
+        	allTeacherNames.add(t.getName());
+        	teacherNameIdMap.put(t.getName(), t.getId());
+        });
+        this.teacherSelectPane = new PeopleSelect("Select a Teacher", allTeacherNames);
+
+        this.namePane.setOnTextChanged((String s) -> {
             this.name = s;
             this.enableButtonIfOk();
         });
         
-        roomNamePane.setOnTextChanged((String s) -> {
+        this.roomNamePane.setOnTextChanged((String s) -> {
         	this.roomName = s;
         	this.enableButtonIfOk();
         });
         
-        dayPane.setOnTextChanged((String s) -> {
+        this.dayPane.setOnTextChanged((String s) -> {
         	this.day = s;
         	this.enableButtonIfOk();
         });
         
-        periodPane.setOnTextChanged((Integer period) -> {
+        this.periodPane.setOnTextChanged((Integer period) -> {
         	this.period = period;
         	this.enableButtonIfOk();
         });
-
-        idPane.setOnTextChanged((Integer id) -> {
-            this.teacherId = id;
-            this.enableButtonIfOk();
+        
+        this.teacherSelectPane.setOnSelect((String s) -> {
+        	int id = teacherNameIdMap.get(s);
+        	this.teacherId = id;
+        	this.enableButtonIfOk();
         });
 
         this.setBorder(BorderFactory.createEmptyBorder(30, 30, 10, 30));
@@ -64,11 +87,11 @@ public class AddCoursePane extends JPanel {
         JPanel labelPane = new JPanel();
         labelPane.add(new JLabel("Add Course"));
         this.add(labelPane);
-        this.add(namePane);
-        this.add(roomNamePane);
-        this.add(dayPane);
-        this.add(periodPane);
-        this.add(idPane);
+        this.add(this.namePane);
+        this.add(this.roomNamePane);
+        this.add(this.dayPane);
+        this.add(this.periodPane);
+        this.add(this.teacherSelectPane);
         this.add(this.button);
     }
     
@@ -77,7 +100,7 @@ public class AddCoursePane extends JPanel {
     			&& this.roomNamePane.isOk()
     			&& this.dayPane.isOk()
     			&& this.periodPane.isOk()
-    			&& this.idPane.isOk();
+    			&& this.teacherSelectPane.isOk();
     }
     
     private void enableButtonIfOk() {
@@ -93,7 +116,7 @@ public class AddCoursePane extends JPanel {
     	this.roomNamePane.reset();
     	this.dayPane.reset();
     	this.periodPane.reset();
-        this.idPane.reset();
+    	this.teacherSelectPane.reset();
         this.button.setEnabled(false);
     }
 

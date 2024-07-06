@@ -1,4 +1,4 @@
-package GUI;
+package GUI.components;
 
 import java.awt.Color;
 import java.awt.GridLayout;
@@ -9,39 +9,34 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 @SuppressWarnings("serial")
-public class IdField extends JPanel {
+public class DayField extends JPanel {
 	private boolean isOk = false;
-	private int id;
 	
 	private JLabel errlabel = new JLabel("");
-	private JTextField idField = new JTextField("");
+	private JTextField dayField = new JTextField("");
 	
-	private Consumer<Integer> onTextChanged;
+	private Consumer<String> onTextChanged;
 	
 	
-	public IdField(String label) {
+	public DayField(String label) {
 		super();
-		this.idField.getDocument().addDocumentListener(this.listener);
+		this.dayField.getDocument().addDocumentListener(this.listener);
 		JPanel namePane = new JPanel();
 		namePane.setLayout(new GridLayout(1, 0));
 		namePane.add(new JLabel(label + ":"));
-		namePane.add(this.idField);
+		namePane.add(this.dayField);
 		
 		this.setLayout(new GridLayout(0, 1));
 		this.add(namePane);
 		this.add(this.errlabel);
 	}
 	
-	public void setOnTextChanged(Consumer<Integer> onTextChanged) {
+	public void setOnTextChanged(Consumer<String> onTextChanged) {
 		this.onTextChanged = onTextChanged;
 	}
 	
 	public String getText() {
-		return idField.getText();
-	}
-	
-	public int getId() {
-		return this.id;
+		return dayField.getText();
 	}
 	
 	public boolean isOk() {
@@ -50,30 +45,23 @@ public class IdField extends JPanel {
 	
 
 	public void reset() {
-		this.idField.setText("");
+		this.dayField.setText("");
 		this.errlabel.setText("");
 	}
 	
-	private void idCheck() {
-		String newidString = this.idField.getText();
-		try {
-			this.id = Integer.valueOf(newidString);
-		} catch (Exception ex) {
-			this.errlabel.setText("student ID should have numbers!");
-			this.errlabel.setForeground(Color.red);
-			this.isOk = false;
-		}
-		if (newidString.length() != 8) {
-			this.errlabel.setText("student ID should have 8 digits!");
+	private void inputCheck() {
+		String newDay = dayField.getText();
+		if (!newDay.matches("Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday")) {
+			this.errlabel.setText("day shoud match 'Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday'");
 			this.errlabel.setForeground(Color.red);
 			this.isOk = false;
 		} else {
-			this.errlabel.setText("there are no problem with student ID!");
+			this.errlabel.setText("there are no problem with day!");
 			this.errlabel.setForeground(Color.blue);
 			this.isOk = true;
 		}
 	}
-
+	
 	class TextFieldDocumentListener implements DocumentListener {
 		@Override
 		public void insertUpdate(DocumentEvent e) {
@@ -91,8 +79,8 @@ public class IdField extends JPanel {
 		}
 
 		private void onTextChanged(DocumentEvent e) {
-			idCheck();
-			IdField.this.onTextChanged.accept(IdField.this.getId());	
+			DayField.this.inputCheck();
+			DayField.this.onTextChanged.accept(DayField.this.getText());
 		}
 	}
 
