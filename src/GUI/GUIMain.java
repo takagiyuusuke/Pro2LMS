@@ -5,6 +5,9 @@ import javax.swing.*;
 
 import database.StudentDB;
 import database.TeacherDB;
+import GUI.page.AddCoursePane;
+import GUI.page.AddStudentPane;
+import GUI.page.AddTeacherPane;
 import database.CourseDB;
 
 import java.awt.event.*;

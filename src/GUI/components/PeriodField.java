@@ -1,4 +1,4 @@
-package GUI;
+package GUI.components;
 
 import java.awt.Color;
 import java.awt.GridLayout;
@@ -9,34 +9,39 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 @SuppressWarnings("serial")
-public class DayField extends JPanel {
+public class PeriodField extends JPanel {
 	private boolean isOk = false;
+	private int period;
 	
 	private JLabel errlabel = new JLabel("");
-	private JTextField dayField = new JTextField("");
+	private JTextField periodField = new JTextField("");
 	
-	private Consumer<String> onTextChanged;
+	private Consumer<Integer> onTextChanged;
 	
 	
-	public DayField(String label) {
+	public PeriodField(String label) {
 		super();
-		this.dayField.getDocument().addDocumentListener(this.listener);
+		this.periodField.getDocument().addDocumentListener(this.listener);
 		JPanel namePane = new JPanel();
 		namePane.setLayout(new GridLayout(1, 0));
 		namePane.add(new JLabel(label + ":"));
-		namePane.add(this.dayField);
+		namePane.add(this.periodField);
 		
 		this.setLayout(new GridLayout(0, 1));
 		this.add(namePane);
 		this.add(this.errlabel);
 	}
 	
-	public void setOnTextChanged(Consumer<String> onTextChanged) {
+	public void setOnTextChanged(Consumer<Integer> onTextChanged) {
 		this.onTextChanged = onTextChanged;
 	}
 	
 	public String getText() {
-		return dayField.getText();
+		return periodField.getText();
+	}
+	
+	public int getPeriod() {
+		return this.period;
 	}
 	
 	public boolean isOk() {
@@ -45,23 +50,30 @@ public class DayField extends JPanel {
 	
 
 	public void reset() {
-		this.dayField.setText("");
+		this.periodField.setText("");
 		this.errlabel.setText("");
 	}
 	
-	private void inputCheck() {
-		String newDay = dayField.getText();
-		if (!newDay.matches("Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday")) {
-			this.errlabel.setText("day shoud match 'Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday'");
+	private void periodCheck() {
+		String newPeriodString = this.periodField.getText();
+		if (newPeriodString == null || !newPeriodString.matches("[0-9]+")) {
+			this.errlabel.setText("Period should have numbers!");
+			this.errlabel.setForeground(Color.red);
+			this.isOk = false;
+			return;
+		}
+		this.period = Integer.valueOf(newPeriodString);
+		if (!(this.period >= 1 && this.period <= 6)) {
+			this.errlabel.setText("Period should be in 1~6!");
 			this.errlabel.setForeground(Color.red);
 			this.isOk = false;
 		} else {
-			this.errlabel.setText("there are no problem with day!");
+			this.errlabel.setText("there are no problem with period!");
 			this.errlabel.setForeground(Color.blue);
 			this.isOk = true;
 		}
 	}
-	
+
 	class TextFieldDocumentListener implements DocumentListener {
 		@Override
 		public void insertUpdate(DocumentEvent e) {
@@ -79,8 +91,8 @@ public class DayField extends JPanel {
 		}
 
 		private void onTextChanged(DocumentEvent e) {
-			DayField.this.inputCheck();
-			DayField.this.onTextChanged.accept(DayField.this.getText());
+			periodCheck();
+			PeriodField.this.onTextChanged.accept(PeriodField.this.getPeriod());	
 		}
 	}
 

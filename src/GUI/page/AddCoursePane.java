@@ -1,5 +1,10 @@
-package GUI;
+package GUI.page;
 import javax.swing.*;
+
+import GUI.components.DayField;
+import GUI.components.NameField;
+import GUI.components.PeopleSelect;
+import GUI.components.PeriodField;
 import database.CourseDB;
 import database.TeacherDB;
 import entities.Teacher;
