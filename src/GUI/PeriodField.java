@@ -56,13 +56,13 @@ public class PeriodField extends JPanel {
 	
 	private void periodCheck() {
 		String newPeriodString = this.periodField.getText();
-		try {
-			this.period = Integer.valueOf(newPeriodString);
-		} catch (Exception ex) {
+		if (newPeriodString == null || !newPeriodString.matches("[0-9]+")) {
 			this.errlabel.setText("Period should have numbers!");
 			this.errlabel.setForeground(Color.red);
 			this.isOk = false;
+			return;
 		}
+		this.period = Integer.valueOf(newPeriodString);
 		if (!(this.period >= 1 && this.period <= 6)) {
 			this.errlabel.setText("Period should be in 1~6!");
 			this.errlabel.setForeground(Color.red);
