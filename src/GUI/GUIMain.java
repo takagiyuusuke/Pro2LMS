@@ -28,7 +28,7 @@ public class GUIMain {
     public GUIMain(StudentDB studentDB, TeacherDB teacherDB, CourseDB courseDB) {
     	this.addStudentPane = new AddStudentPane(studentDB);
     	this.addTeacherPane = new AddTeacherPane(teacherDB);
-    	this.addCoursePane = new AddCoursePane(courseDB);
+    	this.addCoursePane = new AddCoursePane(courseDB, teacherDB);
     	this.Exec();
     }
     
