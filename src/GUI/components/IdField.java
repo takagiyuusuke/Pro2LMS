@@ -1,4 +1,4 @@
-package GUI;
+package GUI.components;
 
 import java.awt.Color;
 import java.awt.GridLayout;
@@ -9,68 +9,71 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 @SuppressWarnings("serial")
-public class NameField extends JPanel {
-	private boolean nameIsOk = false;
+public class IdField extends JPanel {
+	private boolean isOk = false;
+	private int id;
 	
 	private JLabel errlabel = new JLabel("");
-	private JTextField nameField = new JTextField("");
+	private JTextField idField = new JTextField("");
 	
-	private Consumer<String> onTextChanged;
+	private Consumer<Integer> onTextChanged;
 	
 	
-	public NameField(String label) {
+	public IdField(String label) {
 		super();
-		this.nameField.getDocument().addDocumentListener(this.listener);
+		this.idField.getDocument().addDocumentListener(this.listener);
 		JPanel namePane = new JPanel();
 		namePane.setLayout(new GridLayout(1, 0));
 		namePane.add(new JLabel(label + ":"));
-		namePane.add(this.nameField);
+		namePane.add(this.idField);
 		
 		this.setLayout(new GridLayout(0, 1));
 		this.add(namePane);
 		this.add(this.errlabel);
 	}
 	
-	public void setOnTextChanged(Consumer<String> onTextChanged) {
+	public void setOnTextChanged(Consumer<Integer> onTextChanged) {
 		this.onTextChanged = onTextChanged;
 	}
 	
 	public String getText() {
-		return nameField.getText();
+		return idField.getText();
+	}
+	
+	public int getId() {
+		return this.id;
 	}
 	
 	public boolean isOk() {
-		return this.nameIsOk;
+		return this.isOk;
 	}
 	
-	public void deleteText() {
-		this.nameField.setText("");
+
+	public void reset() {
+		this.idField.setText("");
 		this.errlabel.setText("");
 	}
 	
-	private boolean nameCheck() {
-		String newName = nameField.getText();
-		if (newName.length() == 0) {
-			this.errlabel.setText("name should have at least 1 letter!");
+	private void idCheck() {
+		String newidString = this.idField.getText();
+		try {
+			this.id = Integer.valueOf(newidString);
+		} catch (Exception ex) {
+			this.errlabel.setText("student ID should have numbers!");
 			this.errlabel.setForeground(Color.red);
-			this.nameIsOk = false;
-		} else if (newName.length() >= 20) {
-			this.errlabel.setText("name should be shorter than 20 letters!");
-			this.errlabel.setForeground(Color.red);
-			this.nameIsOk = false;
-		} else if (!newName.matches("[a-zA-Z\\s]*")) {
-			this.errlabel.setText("name should have only alphabets and space!");
-			this.errlabel.setForeground(Color.red);
-			this.nameIsOk = false;
-		} else {
-			this.errlabel.setText("there are no problem with name!");
-			this.errlabel.setForeground(Color.blue);
-			this.nameIsOk = true;
-			return true;
+			this.isOk = false;
 		}
-		return false;
+		if (newidString.length() != 8) {
+			this.errlabel.setText("student ID should have 8 digits!");
+			this.errlabel.setForeground(Color.red);
+			this.isOk = false;
+		} else {
+			this.errlabel.setText("there are no problem with student ID!");
+			this.errlabel.setForeground(Color.blue);
+			this.isOk = true;
+		}
 	}
-	
+
 	class TextFieldDocumentListener implements DocumentListener {
 		@Override
 		public void insertUpdate(DocumentEvent e) {
@@ -88,10 +91,8 @@ public class NameField extends JPanel {
 		}
 
 		private void onTextChanged(DocumentEvent e) {
-			if (nameCheck()) {
-				NameField.this.onTextChanged.accept(NameField.this.getText());
-			}
-			
+			idCheck();
+			IdField.this.onTextChanged.accept(IdField.this.getId());	
 		}
 	}
 

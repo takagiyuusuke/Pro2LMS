@@ -1,4 +1,4 @@
-package GUI;
+package GUI.components;
 
 import java.awt.Color;
 import java.awt.GridLayout;
@@ -9,23 +9,23 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 @SuppressWarnings("serial")
-public class IdField extends JPanel {
+public class PeriodField extends JPanel {
 	private boolean isOk = false;
-	private int id;
+	private int period;
 	
 	private JLabel errlabel = new JLabel("");
-	private JTextField idField = new JTextField("");
+	private JTextField periodField = new JTextField("");
 	
 	private Consumer<Integer> onTextChanged;
 	
 	
-	public IdField(String label) {
+	public PeriodField(String label) {
 		super();
-		this.idField.getDocument().addDocumentListener(this.listener);
+		this.periodField.getDocument().addDocumentListener(this.listener);
 		JPanel namePane = new JPanel();
 		namePane.setLayout(new GridLayout(1, 0));
 		namePane.add(new JLabel(label + ":"));
-		namePane.add(this.idField);
+		namePane.add(this.periodField);
 		
 		this.setLayout(new GridLayout(0, 1));
 		this.add(namePane);
@@ -37,42 +37,40 @@ public class IdField extends JPanel {
 	}
 	
 	public String getText() {
-		return idField.getText();
+		return periodField.getText();
 	}
 	
-	public int getId() {
-		return this.id;
+	public int getPeriod() {
+		return this.period;
 	}
 	
 	public boolean isOk() {
 		return this.isOk;
 	}
 	
-	public void deleteText() {
-		this.idField.setText("");
+
+	public void reset() {
+		this.periodField.setText("");
 		this.errlabel.setText("");
 	}
 	
-	private boolean idCheck() {
-		String newidString = this.idField.getText();
-		try {
-			this.id = Integer.valueOf(newidString);
-		} catch (Exception ex) {
-			this.errlabel.setText("student ID should have numbers!");
+	private void periodCheck() {
+		String newPeriodString = this.periodField.getText();
+		if (newPeriodString == null || !newPeriodString.matches("[0-9]+")) {
+			this.errlabel.setText("Period should have numbers!");
 			this.errlabel.setForeground(Color.red);
 			this.isOk = false;
-			return false;
+			return;
 		}
-		if (newidString.length() != 8) {
-			this.errlabel.setText("student ID should have 8 digits!");
+		this.period = Integer.valueOf(newPeriodString);
+		if (!(this.period >= 1 && this.period <= 6)) {
+			this.errlabel.setText("Period should be in 1~6!");
 			this.errlabel.setForeground(Color.red);
 			this.isOk = false;
-			return false;
 		} else {
-			this.errlabel.setText("there are no problem with student ID!");
+			this.errlabel.setText("there are no problem with period!");
 			this.errlabel.setForeground(Color.blue);
 			this.isOk = true;
-			return true;
 		}
 	}
 
@@ -93,10 +91,8 @@ public class IdField extends JPanel {
 		}
 
 		private void onTextChanged(DocumentEvent e) {
-			if (idCheck()) {
-				IdField.this.onTextChanged.accept(IdField.this.getId());
-			}
-			
+			periodCheck();
+			PeriodField.this.onTextChanged.accept(PeriodField.this.getPeriod());	
 		}
 	}
 
