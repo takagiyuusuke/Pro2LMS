@@ -1,0 +1,315 @@
+package GUI.page;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.awt.event.*;
+
+import database.CourseDB;
+import database.StudentDB;
+import entities.Course;
+import entities.Student;
+import entities.Teacher;
+import GUI.components.NameField;
+import GUI.components.PeopleSelect;
+
+import java.util.List;
+import java.util.Map;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+@SuppressWarnings("serial")
+public class AllStudentsPane extends JPanel {
+	private StudentDB studentDB;
+	private CourseDB courseDB;
+	private String[] columnNames = {"Student ID", "Name"};
+	private List<Student> students;
+	
+	private DefaultTableModel model = new DefaultTableModel(columnNames, 0);
+	
+//	private boolean frameClosed = false;
+
+	public AllStudentsPane(StudentDB studentDB, CourseDB courseDB) {
+		super();
+		this.studentDB = studentDB;
+		this.courseDB = courseDB;
+		this.initUI();
+	}
+	
+	private void loadStudents() {
+		students = studentDB.getAllStudents();
+		model.setRowCount(0);
+		for (Student student : students) {
+			Object[] row = {student.getId(), student.getName()};
+			model.addRow(row);
+		}
+	}
+
+	private void initUI() {
+		loadStudents();
+		
+		JTable table = new JTable(model) {
+		    @Override
+		    public boolean isCellEditable(int row, int column) {
+		        return false;
+		    }
+		};
+		
+		table.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int row = table.rowAtPoint(e.getPoint());
+                if (row >= 0) {
+                	System.out.println(students.get(row).getName());
+//                	JOptionPane.showInputDialog(table, students.get(row).getName() + "さんの情報を編集");
+                	showDetailFrame(students.get(row), e.getLocationOnScreen());
+                }
+            }
+        });
+		
+		JScrollPane scrollPane = new JScrollPane(table);
+		table.setFillsViewportHeight(true);
+		
+//		JPanel pane = new JPanel(new BorderLayout());
+		this.setBorder(BorderFactory.createEmptyBorder(30, 30, 10, 30));
+//		pane.add(new JLabel("Search by ID"));
+		this.add(scrollPane, BorderLayout.CENTER);
+	}
+	
+	private void showDetailFrame(Student student, Point location) {
+        JFrame detailFrame = new JFrame("Information about " + student.getName());
+        JLabel label = new JLabel("Name: " + student.getName());
+        JLabel label2 = new JLabel("Student ID: " + student.getId());
+        JLabel label3 = new JLabel("All Courses:");
+        JPanel pane = new JPanel();
+        List<Integer> allCourseIds = student.getCourseIds();
+        List<String> stringList = new ArrayList<String>();
+        for (Integer integer: allCourseIds) {
+        	stringList.add(courseDB.getCourseById(integer).getName());
+        }
+        DefaultListModel<String> listModel = new DefaultListModel<>();
+        for (String s : stringList) listModel.addElement(s);
+		JList<String> jlist = new JList<>(listModel);
+        /////////////////////////////////////////////////////////////////////////////////////////////////////
+        JButton editButton = new JButton("Edit Name");
+        
+        ActionListener editListener = new ActionListener() {
+        	private String name;
+        	public void actionPerformed(ActionEvent e) {
+        		NameField nameField = new NameField("New Name");
+        		JFrame editFrame = new JFrame("Editing " + student.getName());
+        		editFrame.setSize(300,150);
+        		JPanel pane = new JPanel();
+//        		pane.setLayout(new GridLayout(0,1));
+        		pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
+        		pane.add(nameField);
+        		JButton cancelButton = new JButton("cancel");
+        		JButton okButton = new JButton("OK");
+        		JPanel buttonPane = new JPanel();
+        		buttonPane.setLayout(new GridLayout(1,0));
+        		buttonPane.add(cancelButton);
+        		buttonPane.add(okButton);
+        		pane.add(buttonPane);
+        		editFrame.add(pane);
+        		editFrame.setLocation(location);
+        		okButton.setEnabled(false);
+        		nameField.setOnTextChanged((String s) -> {
+                    this.name = s;
+                    if (nameField.isOk()) {
+                        okButton.setEnabled(true);
+                    } else {
+                        okButton.setEnabled(false);
+                    }
+                });
+        		ActionListener okListener = new ActionListener() {
+        			public void actionPerformed(ActionEvent e) {
+        				student.setName(name);
+        				label.setText("Name: " + student.getName());
+        				studentDB.updateStudent(student);
+        				loadStudents();
+        				editFrame.dispose();
+        			};
+        		};
+        		okButton.addActionListener(okListener);
+        		
+        		ActionListener cancelListener = new ActionListener() {
+        			public void actionPerformed(ActionEvent e) {
+        				editFrame.dispose();
+        			};
+        		};
+        		cancelButton.addActionListener(cancelListener);
+        		editFrame.setVisible(true);
+        	}
+        };
+        editButton.addActionListener(editListener);
+        /////////////////////////////////////////////////////////////////////////////////////////////////////
+        JButton addCourseButton = new JButton("Add Course");
+        ActionListener addCourseListener = new ActionListener() {
+        	private int courseId;
+        	public void actionPerformed(ActionEvent e) {
+        		List<Course> allCourses = courseDB.getAllCourses();
+                List<String> allCourseNames = new ArrayList<String>();
+                Map<String, Integer> courseNameIdMap = new HashMap<>();
+                List<Integer> learningCourses = student.getCourseIds();
+                
+                allCourses.forEach((Course c) -> {
+                	if (! learningCourses.contains(c.getId())) {
+                		allCourseNames.add(c.getName());
+                		courseNameIdMap.put(c.getName(), c.getId());
+                	}
+                });
+                PeopleSelect courseSelectPane = new PeopleSelect("Select a Course", allCourseNames);
+        		JFrame editFrame = new JFrame("Editing " + student.getName());
+        		editFrame.setSize(300,150);
+        		JPanel pane = new JPanel();
+//        		pane.setLayout(new GridLayout(0,1));
+        		pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
+        		pane.add(courseSelectPane);
+        		JButton cancelButton = new JButton("cancel");
+        		JButton okButton = new JButton("OK");
+        		JPanel buttonPane = new JPanel();
+        		buttonPane.setLayout(new GridLayout(1,0));
+        		buttonPane.add(cancelButton);
+        		buttonPane.add(okButton);
+        		pane.add(buttonPane);
+        		editFrame.add(pane);
+        		editFrame.setLocation(location);
+        		okButton.setEnabled(false);
+        		courseSelectPane.setOnSelect((String s) -> {
+                	int id = courseNameIdMap.get(s);
+                	this.courseId = id;
+                	if (courseSelectPane.isOk()) okButton.setEnabled(true);
+                	else okButton.setEnabled(false);
+                });
+        		ActionListener okListener = new ActionListener() {
+        			public void actionPerformed(ActionEvent e) {
+        				student.addCourseId(courseId);
+        				Course addedCourse = courseDB.getCourseById(courseId);
+        				listModel.addElement(addedCourse.getName());
+        				jlist.validate();
+        				studentDB.updateStudent(student);
+        				addedCourse.addStudentId(student.getId());
+        				courseDB.updateCourse(addedCourse);
+        				loadStudents();
+        				editFrame.dispose();
+        			};
+        		};
+        		okButton.addActionListener(okListener);
+        		
+        		ActionListener cancelListener = new ActionListener() {
+        			public void actionPerformed(ActionEvent e) {
+        				editFrame.dispose();
+        			};
+        		};
+        		cancelButton.addActionListener(cancelListener);
+        		editFrame.setVisible(true);
+        	}
+        };
+        addCourseButton.addActionListener(addCourseListener);
+        /////////////////////////////////////////////////////////////////////////////////////////////////////
+        JButton rmvCourseButton = new JButton("Remove Course");
+        ActionListener rmvCourseListener = new ActionListener() {
+        	private int courseId;
+        	public void actionPerformed(ActionEvent e) {
+        		List<Course> allCourses = courseDB.getAllCourses();
+                List<String> allCourseNames = new ArrayList<String>();
+                Map<String, Integer> courseNameIdMap = new HashMap<>();
+                List<Integer> learningCourses = student.getCourseIds();
+   
+                allCourses.forEach((Course c) -> {
+                	if (learningCourses.contains(c.getId())) {
+                		allCourseNames.add(c.getName());
+                		courseNameIdMap.put(c.getName(), c.getId());
+                	}
+                });
+                PeopleSelect courseSelectPane = new PeopleSelect("Select a Course", allCourseNames);
+        		JFrame editFrame = new JFrame("Editing " + student.getName());
+        		editFrame.setSize(300,150);
+        		JPanel pane = new JPanel();
+//        		pane.setLayout(new GridLayout(0,1));
+        		pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
+        		pane.add(courseSelectPane);
+        		JButton cancelButton = new JButton("cancel");
+        		JButton okButton = new JButton("OK");
+        		JPanel buttonPane = new JPanel();
+        		buttonPane.setLayout(new GridLayout(1,0));
+        		buttonPane.add(cancelButton);
+        		buttonPane.add(okButton);
+        		pane.add(buttonPane);
+        		editFrame.add(pane);
+        		editFrame.setLocation(location);
+        		okButton.setEnabled(false);
+        		courseSelectPane.setOnSelect((String s) -> {
+                	int id = courseNameIdMap.get(s);
+                	this.courseId = id;
+                	if (courseSelectPane.isOk()) okButton.setEnabled(true);
+                	else okButton.setEnabled(false);
+                });
+        		ActionListener okListener = new ActionListener() {
+        			public void actionPerformed(ActionEvent e) {
+        				student.removeCourseId(courseId);
+        				Course removedCourse = courseDB.getCourseById(courseId);
+        				listModel.removeElement(removedCourse.getName());
+        				jlist.validate();
+        				studentDB.updateStudent(student);
+        				removedCourse.removeStudentId(student.getId());
+        				courseDB.updateCourse(removedCourse);
+        				loadStudents();
+        				editFrame.dispose();
+        			};
+        		};
+        		okButton.addActionListener(okListener);
+        		
+        		ActionListener cancelListener = new ActionListener() {
+        			public void actionPerformed(ActionEvent e) {
+        				editFrame.dispose();
+        			};
+        		};
+        		cancelButton.addActionListener(cancelListener);
+        		editFrame.setVisible(true);
+        	}
+        };
+        rmvCourseButton.addActionListener(rmvCourseListener);
+        /////////////////////////////////////////////////////////////////////////////////////////////////////
+        JButton deleteButton = new JButton("Delete Student");
+        ActionListener deleteListener = new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		int answer = JOptionPane.showConfirmDialog(detailFrame,"Really Delete " + student.getName() + "?", "Confirming Deletion of  Student", 2);
+        		if (answer == 0) {
+        			studentDB.deleteStudent(student);
+        			loadStudents();
+        			detailFrame.dispose();
+        		}
+        	}
+        };
+        deleteButton.addActionListener(deleteListener);
+        deleteButton.setForeground(Color.red);
+        /////////////////////////////////////////////////////////////////////////////////////////////////////
+        JPanel subPane = new JPanel();
+        subPane.setLayout(new GridLayout(1,0));
+        subPane.add(deleteButton);
+        subPane.add(rmvCourseButton);
+        subPane.add(addCourseButton);
+        subPane.add(editButton);
+        
+//        pane.setLayout(new GridLayout(0,1));
+		pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
+        pane.add(label);
+        pane.add(label2);
+        pane.add(label3);
+        pane.add(new JScrollPane(jlist));
+        pane.add(subPane);
+        detailFrame.add(pane);
+        detailFrame.setSize(600, 200);
+        detailFrame.setLocation(location);
+        detailFrame.setVisible(true);
+        
+        detailFrame.addWindowListener(new WindowAdapter() {
+        	@Override
+        	public void windowClosing(WindowEvent e) {
+        		AllStudentsPane.this.loadStudents();
+        		
+        	}
+        });
+    }
+}

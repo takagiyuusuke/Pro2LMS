@@ -5,7 +5,7 @@ import java.nio.file.*;
 import java.io.*;
 import java.util.*;
 
-abstract class DataBase {
+public abstract class DataBase {
 	final private String DIR_PATH = "data";
 	private String fileName;
 	private List<String> headers;
@@ -134,6 +134,24 @@ abstract class DataBase {
 			return false;
 		}
 		return isSuccess;
+	}
+	
+	public void deleteItem(int id) {
+	    try {
+	        List<String> allItems = Files.readAllLines(Paths.get(this.fileName), Charset.defaultCharset());
+	        Iterator<String> itr = allItems.iterator();
+	        itr.next();
+	        while (itr.hasNext()) {
+	            String item = itr.next();
+	            String[] properties = item.split(",");
+	            if (properties[0].equals(String.valueOf(id))) {
+	                itr.remove();
+	            }
+	        }
+	        Files.write(Paths.get(this.fileName), allItems, Charset.defaultCharset());
+	    } catch(IOException e) {
+	        e.printStackTrace();
+	    }
 	}
 	
 	public void clear() {

@@ -24,8 +24,12 @@ public class Main {
 		teacherDB.createTeacher(11111112, "takada shingo");
 
 		courseDB.createCourse("Programing2nd", "A32", "Friday", 3, 11111112);
+		courseDB.createCourse("ComputerArchitecture", "XXX", "Friday", 1, 11111112);
+		courseDB.createCourse("DataModeling", "WorkStation", "Friday", 5, 11111112);
+		courseDB.createCourse("Algorithm", "ComputerRoom", "Tuesday", 2, 11111112);
 
 		Student koki = studentDB.getStudentById(62210974);
+		studentDB.updateStudent(koki);
 		System.out.println("name: "+koki.getName()+", id: "+koki.getId());
 		
 		Teacher tanaka = teacherDB.getTeacherById(11111111);

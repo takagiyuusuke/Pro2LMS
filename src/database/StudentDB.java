@@ -45,4 +45,12 @@ public class StudentDB extends DataBase {
 			return null;
 		}
 	}
+	
+	public void deleteStudent(Student student) {
+		super.deleteItem(student.getId());
+	}
+	
+	public void deleteStudent(int id) {
+		super.deleteItem(id);
+	}
 }
