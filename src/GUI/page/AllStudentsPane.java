@@ -11,7 +11,7 @@ import entities.Course;
 import entities.Student;
 import entities.Teacher;
 import GUI.components.NameField;
-import GUI.components.PeopleSelect;
+import GUI.components.EntitySelect;
 
 import java.util.List;
 import java.util.Map;
@@ -146,7 +146,7 @@ public class AllStudentsPane extends JPanel {
                 		courseNameIdMap.put(c.getName(), c.getId());
                 	}
                 });
-                PeopleSelect courseSelectPane = new PeopleSelect("Select a Course", allCourseNames);
+                EntitySelect courseSelectPane = new EntitySelect("Select a Course", allCourseNames);
         		JFrame editFrame = new JFrame("Editing " + student.getName());
         		editFrame.setSize(300,150);
         		JPanel pane = new JPanel();
@@ -209,7 +209,7 @@ public class AllStudentsPane extends JPanel {
                 		courseNameIdMap.put(c.getName(), c.getId());
                 	}
                 });
-                PeopleSelect courseSelectPane = new PeopleSelect("Select a Course", allCourseNames);
+                EntitySelect courseSelectPane = new EntitySelect("Select a Course", allCourseNames);
         		JFrame editFrame = new JFrame("Editing " + student.getName());
         		editFrame.setSize(300,150);
         		JPanel pane = new JPanel();

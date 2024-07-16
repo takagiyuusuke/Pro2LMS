@@ -9,14 +9,14 @@ import java.util.List;
 import java.util.function.Consumer;
 
 @SuppressWarnings("serial")
-public class PeopleSelect extends JPanel {
+public class EntitySelect extends JPanel {
 	private String[] values;
 	private JLabel errLabel = new JLabel("");
 	private JComboBox<String> select;
 	private Consumer<String> onSelect;
 	private boolean isOk;
 	
-	public PeopleSelect(String label, List<String> listValues) {
+	public EntitySelect(String label, List<String> listValues) {
 		super();
 		listValues.addFirst(label);
 		this.values = listValues.toArray(new String[listValues.size()]);
@@ -43,24 +43,33 @@ public class PeopleSelect extends JPanel {
 		this.onSelect = onSelect;
 	}
 	
-	public void reset() {
-		this.select.setSelectedIndex(0);
-		this.errLabel.setText("");
-	}
+	public void reset(String label, List<String> listValues) {
+        listValues.addFirst(label); 
+        this.values = listValues.toArray(new String[listValues.size()]);
+        try {
+        this.select.removeAllItems();
+        } catch (Exception e) {
+        }
+        for (String value : this.values) {
+            this.select.addItem(value);
+        }
+        this.select.setSelectedIndex(0);
+        this.errLabel.setText("");
+    }
 	
 	class SelectActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			int index = PeopleSelect.this.select.getSelectedIndex();
+			int index = EntitySelect.this.select.getSelectedIndex();
 			if (index == 0) {
-				PeopleSelect.this.errLabel.setText("it must be selected!");
-				PeopleSelect.this.errLabel.setForeground(Color.red);
-				PeopleSelect.this.isOk = false;
+				EntitySelect.this.errLabel.setText("it must be selected!");
+				EntitySelect.this.errLabel.setForeground(Color.red);
+				EntitySelect.this.isOk = false;
 			} else {
-				PeopleSelect.this.isOk = true;
-				PeopleSelect.this.errLabel.setText("there is no problem!");
-				PeopleSelect.this.errLabel.setForeground(Color.blue);
-				String teacherName = PeopleSelect.this.select.getItemAt(index);
-				PeopleSelect.this.onSelect.accept(teacherName);
+				EntitySelect.this.isOk = true;
+				EntitySelect.this.errLabel.setText("there is no problem!");
+				EntitySelect.this.errLabel.setForeground(Color.blue);
+				String teacherName = EntitySelect.this.select.getItemAt(index);
+				EntitySelect.this.onSelect.accept(teacherName);
 			}
 			
 		}
