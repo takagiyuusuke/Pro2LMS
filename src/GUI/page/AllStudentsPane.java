@@ -40,11 +40,10 @@ public class AllStudentsPane extends JPanel {
 		    }
 		};
 		table.addMouseListener(new MouseAdapter() {
-            @Override
+			@Override
             public void mouseClicked(MouseEvent e) {
                 int row = table.rowAtPoint(e.getPoint());
                 if (row >= 0) {
-                	System.out.println(students.get(row).getName());
                 	AllStudentsPane.this.showDetailFrame(students.get(row), e.getLocationOnScreen());
                 }
             }
@@ -74,8 +73,8 @@ public class AllStudentsPane extends JPanel {
         JPanel pane = new JPanel();
         List<Integer> allCourseIds = student.getCourseIds();
         List<String> stringList = new ArrayList<String>();
-        for (Integer integer: allCourseIds) {
-        	stringList.add(this.courseDB.getCourseById(integer).getName());
+        for (Integer id: allCourseIds) {
+        	stringList.add(this.courseDB.getCourseById(id).getName());
         }
         DefaultListModel<String> listModel = new DefaultListModel<>();
         for (String s : stringList) listModel.addElement(s);

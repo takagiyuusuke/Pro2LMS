@@ -5,7 +5,7 @@ import java.nio.file.*;
 import java.io.*;
 import java.util.*;
 
-public abstract class DataBase {
+abstract class DataBase {
 	final private String DIR_PATH = "data";
 	private String fileName;
 	private List<String> headers;
