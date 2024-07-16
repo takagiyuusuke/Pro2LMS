@@ -43,9 +43,11 @@ public class PeopleSelect extends JPanel {
 		this.onSelect = onSelect;
 	}
 	
-	public void reset() {
+	public void reset(List<String> listValues) {
 		this.select.setSelectedIndex(0);
 		this.errLabel.setText("");
+		this.values = listValues.toArray(new String[listValues.size()]);
+		this.select.validate();
 	}
 	
 	class SelectActionListener implements ActionListener {
