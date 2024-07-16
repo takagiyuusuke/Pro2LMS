@@ -24,28 +24,13 @@ public class AllStudentsPane extends JPanel {
 	private CourseDB courseDB;
 	private String[] columnNames = {"Student ID", "Name"};
 	private List<Student> students;
-	
 	private DefaultTableModel model = new DefaultTableModel(columnNames, 0);
-	
-//	private boolean frameClosed = false;
 
 	public AllStudentsPane(StudentDB studentDB, CourseDB courseDB) {
 		super();
 		this.studentDB = studentDB;
 		this.courseDB = courseDB;
-		this.initUI();
-	}
-	
-	private void loadStudents() {
-		students = studentDB.getAllStudents();
-		model.setRowCount(0);
-		for (Student student : students) {
-			Object[] row = {student.getId(), student.getName()};
-			model.addRow(row);
-		}
-	}
-
-	private void initUI() {
+		
 		loadStudents();
 		
 		JTable table = new JTable(model) {
@@ -54,14 +39,12 @@ public class AllStudentsPane extends JPanel {
 		        return false;
 		    }
 		};
-		
 		table.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 int row = table.rowAtPoint(e.getPoint());
                 if (row >= 0) {
                 	System.out.println(students.get(row).getName());
-//                	JOptionPane.showInputDialog(table, students.get(row).getName() + "さんの情報を編集");
                 	showDetailFrame(students.get(row), e.getLocationOnScreen());
                 }
             }
@@ -70,10 +53,17 @@ public class AllStudentsPane extends JPanel {
 		JScrollPane scrollPane = new JScrollPane(table);
 		table.setFillsViewportHeight(true);
 		
-//		JPanel pane = new JPanel(new BorderLayout());
 		this.setBorder(BorderFactory.createEmptyBorder(30, 30, 10, 30));
-//		pane.add(new JLabel("Search by ID"));
 		this.add(scrollPane, BorderLayout.CENTER);
+	}
+	
+	public void loadStudents() {
+		students = studentDB.getAllStudents();
+		model.setRowCount(0);
+		for (Student student : students) {
+			Object[] row = {student.getId(), student.getName()};
+			model.addRow(row);
+		}
 	}
 	
 	private void showDetailFrame(Student student, Point location) {
@@ -100,7 +90,6 @@ public class AllStudentsPane extends JPanel {
         		JFrame editFrame = new JFrame("Editing " + student.getName());
         		editFrame.setSize(300,150);
         		JPanel pane = new JPanel();
-//        		pane.setLayout(new GridLayout(0,1));
         		pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
         		pane.add(nameField);
         		JButton cancelButton = new JButton("cancel");
@@ -162,7 +151,6 @@ public class AllStudentsPane extends JPanel {
         		JFrame editFrame = new JFrame("Editing " + student.getName());
         		editFrame.setSize(300,150);
         		JPanel pane = new JPanel();
-//        		pane.setLayout(new GridLayout(0,1));
         		pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
         		pane.add(courseSelectPane);
         		JButton cancelButton = new JButton("cancel");
@@ -226,7 +214,6 @@ public class AllStudentsPane extends JPanel {
         		JFrame editFrame = new JFrame("Editing " + student.getName());
         		editFrame.setSize(300,150);
         		JPanel pane = new JPanel();
-//        		pane.setLayout(new GridLayout(0,1));
         		pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
         		pane.add(courseSelectPane);
         		JButton cancelButton = new JButton("cancel");
@@ -292,7 +279,6 @@ public class AllStudentsPane extends JPanel {
         subPane.add(addCourseButton);
         subPane.add(editButton);
         
-//        pane.setLayout(new GridLayout(0,1));
 		pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
         pane.add(label);
         pane.add(label2);

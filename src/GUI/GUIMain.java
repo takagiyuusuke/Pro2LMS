@@ -113,6 +113,7 @@ public class GUIMain {
 	        GUIMain.this.addStudentPane.reset();
 	        GUIMain.this.addTeacherPane.reset();
 	        GUIMain.this.addCoursePane.reset();
+	        GUIMain.this.allStudentsPane.loadStudents();
 	    }
     }
     
