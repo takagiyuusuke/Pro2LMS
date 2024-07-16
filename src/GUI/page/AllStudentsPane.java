@@ -31,9 +31,9 @@ public class AllStudentsPane extends JPanel {
 		this.studentDB = studentDB;
 		this.courseDB = courseDB;
 		
-		loadStudents();
+		this.loadStudents();
 		
-		JTable table = new JTable(model) {
+		JTable table = new JTable(this.model) {
 		    @Override
 		    public boolean isCellEditable(int row, int column) {
 		        return false;
@@ -45,7 +45,7 @@ public class AllStudentsPane extends JPanel {
                 int row = table.rowAtPoint(e.getPoint());
                 if (row >= 0) {
                 	System.out.println(students.get(row).getName());
-                	showDetailFrame(students.get(row), e.getLocationOnScreen());
+                	AllStudentsPane.this.showDetailFrame(students.get(row), e.getLocationOnScreen());
                 }
             }
         });
@@ -58,11 +58,11 @@ public class AllStudentsPane extends JPanel {
 	}
 	
 	public void loadStudents() {
-		students = studentDB.getAllStudents();
-		model.setRowCount(0);
-		for (Student student : students) {
+		this.students = this.studentDB.getAllStudents();
+		this.model.setRowCount(0);
+		for (Student student : this.students) {
 			Object[] row = {student.getId(), student.getName()};
-			model.addRow(row);
+			this.model.addRow(row);
 		}
 	}
 	
@@ -75,7 +75,7 @@ public class AllStudentsPane extends JPanel {
         List<Integer> allCourseIds = student.getCourseIds();
         List<String> stringList = new ArrayList<String>();
         for (Integer integer: allCourseIds) {
-        	stringList.add(courseDB.getCourseById(integer).getName());
+        	stringList.add(this.courseDB.getCourseById(integer).getName());
         }
         DefaultListModel<String> listModel = new DefaultListModel<>();
         for (String s : stringList) listModel.addElement(s);
@@ -114,8 +114,8 @@ public class AllStudentsPane extends JPanel {
         			public void actionPerformed(ActionEvent e) {
         				student.setName(name);
         				label.setText("Name: " + student.getName());
-        				studentDB.updateStudent(student);
-        				loadStudents();
+        				AllStudentsPane.this.studentDB.updateStudent(student);
+        				AllStudentsPane.this.loadStudents();
         				editFrame.dispose();
         			};
         		};
@@ -136,7 +136,7 @@ public class AllStudentsPane extends JPanel {
         ActionListener addCourseListener = new ActionListener() {
         	private int courseId;
         	public void actionPerformed(ActionEvent e) {
-        		List<Course> allCourses = courseDB.getAllCourses();
+        		List<Course> allCourses = AllStudentsPane.this.courseDB.getAllCourses();
                 List<String> allCourseNames = new ArrayList<String>();
                 Map<String, Integer> courseNameIdMap = new HashMap<>();
                 List<Integer> learningCourses = student.getCourseIds();
@@ -172,13 +172,13 @@ public class AllStudentsPane extends JPanel {
         		ActionListener okListener = new ActionListener() {
         			public void actionPerformed(ActionEvent e) {
         				student.addCourseId(courseId);
-        				Course addedCourse = courseDB.getCourseById(courseId);
+        				Course addedCourse = AllStudentsPane.this.courseDB.getCourseById(courseId);
         				listModel.addElement(addedCourse.getName());
         				jlist.validate();
-        				studentDB.updateStudent(student);
+        				AllStudentsPane.this.studentDB.updateStudent(student);
         				addedCourse.addStudentId(student.getId());
-        				courseDB.updateCourse(addedCourse);
-        				loadStudents();
+        				AllStudentsPane.this.courseDB.updateCourse(addedCourse);
+        				AllStudentsPane.this.loadStudents();
         				editFrame.dispose();
         			};
         		};
@@ -199,7 +199,7 @@ public class AllStudentsPane extends JPanel {
         ActionListener rmvCourseListener = new ActionListener() {
         	private int courseId;
         	public void actionPerformed(ActionEvent e) {
-        		List<Course> allCourses = courseDB.getAllCourses();
+        		List<Course> allCourses = AllStudentsPane.this.courseDB.getAllCourses();
                 List<String> allCourseNames = new ArrayList<String>();
                 Map<String, Integer> courseNameIdMap = new HashMap<>();
                 List<Integer> learningCourses = student.getCourseIds();
@@ -235,13 +235,13 @@ public class AllStudentsPane extends JPanel {
         		ActionListener okListener = new ActionListener() {
         			public void actionPerformed(ActionEvent e) {
         				student.removeCourseId(courseId);
-        				Course removedCourse = courseDB.getCourseById(courseId);
+        				Course removedCourse = AllStudentsPane.this.courseDB.getCourseById(courseId);
         				listModel.removeElement(removedCourse.getName());
         				jlist.validate();
-        				studentDB.updateStudent(student);
+        				AllStudentsPane.this.studentDB.updateStudent(student);
         				removedCourse.removeStudentId(student.getId());
-        				courseDB.updateCourse(removedCourse);
-        				loadStudents();
+        				AllStudentsPane.this.courseDB.updateCourse(removedCourse);
+        				AllStudentsPane.this.loadStudents();
         				editFrame.dispose();
         			};
         		};
@@ -261,10 +261,10 @@ public class AllStudentsPane extends JPanel {
         JButton deleteButton = new JButton("Delete Student");
         ActionListener deleteListener = new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		int answer = JOptionPane.showConfirmDialog(detailFrame,"Really Delete " + student.getName() + "?", "Confirming Deletion of  Student", 2);
-        		if (answer == 0) {
-        			studentDB.deleteStudent(student);
-        			loadStudents();
+        		int answer = JOptionPane.showConfirmDialog(detailFrame, "Really Delete " + student.getName() + "?", "Confirming Deletion of Student", JOptionPane.YES_NO_OPTION);
+        		if (answer == JOptionPane.YES_OPTION) {
+        			AllStudentsPane.this.studentDB.deleteStudent(student);
+        			AllStudentsPane.this.loadStudents();
         			detailFrame.dispose();
         		}
         	}
@@ -273,7 +273,7 @@ public class AllStudentsPane extends JPanel {
         deleteButton.setForeground(Color.red);
         /////////////////////////////////////////////////////////////////////////////////////////////////////
         JPanel subPane = new JPanel();
-        subPane.setLayout(new GridLayout(1,0));
+        subPane.setLayout(new GridLayout(1, 0));
         subPane.add(deleteButton);
         subPane.add(rmvCourseButton);
         subPane.add(addCourseButton);
@@ -294,7 +294,6 @@ public class AllStudentsPane extends JPanel {
         	@Override
         	public void windowClosing(WindowEvent e) {
         		AllStudentsPane.this.loadStudents();
-        		
         	}
         });
     }
