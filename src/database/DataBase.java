@@ -136,6 +136,24 @@ abstract class DataBase {
 		return isSuccess;
 	}
 	
+	public void deleteItem(int id) {
+	    try {
+	        List<String> allItems = Files.readAllLines(Paths.get(this.fileName), Charset.defaultCharset());
+	        Iterator<String> itr = allItems.iterator();
+	        itr.next();
+	        while (itr.hasNext()) {
+	            String item = itr.next();
+	            String[] properties = item.split(",");
+	            if (properties[0].equals(String.valueOf(id))) {
+	                itr.remove();
+	            }
+	        }
+	        Files.write(Paths.get(this.fileName), allItems, Charset.defaultCharset());
+	    } catch(IOException e) {
+	        e.printStackTrace();
+	    }
+	}
+	
 	public void clear() {
 		try {
 			BufferedWriter writer = Files.newBufferedWriter(Paths.get(this.fileName), Charset.defaultCharset());

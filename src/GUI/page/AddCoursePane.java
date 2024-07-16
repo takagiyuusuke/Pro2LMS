@@ -3,7 +3,7 @@ import javax.swing.*;
 
 import GUI.components.DayField;
 import GUI.components.NameField;
-import GUI.components.PeopleSelect;
+import GUI.components.EntitySelect;
 import GUI.components.PeriodField;
 import database.CourseDB;
 import database.TeacherDB;
@@ -31,7 +31,10 @@ public class AddCoursePane extends JPanel {
     private NameField roomNamePane;
     private DayField dayPane;
     private PeriodField periodPane;
-    private PeopleSelect teacherSelectPane;
+    private EntitySelect teacherSelectPane;
+    
+    private List<String> allTeacherNames;
+    private Map<String, Integer> teacherNameIdMap;
 
     public AddCoursePane(CourseDB courseDB, TeacherDB teacherDB) {
     	super();
@@ -47,14 +50,9 @@ public class AddCoursePane extends JPanel {
         this.dayPane = new DayField("Enter Day");
         this.periodPane = new PeriodField("Etner Period");
 
-        List<Teacher> allTeachers = this.teacherDB.getAllTeachers();
-        List<String> allTeacherNames = new ArrayList<String>();
-        Map<String, Integer> teacherNameIdMap = new HashMap<>();
-        allTeachers.forEach((Teacher t) -> {
-        	allTeacherNames.add(t.getName());
-        	teacherNameIdMap.put(t.getName(), t.getId());
-        });
-        this.teacherSelectPane = new PeopleSelect("Select a Teacher", allTeacherNames);
+        this.initializeChoice();
+        
+        this.teacherSelectPane = new EntitySelect("Select a Teacher", allTeacherNames);
 
         this.namePane.setOnTextChanged((String s) -> {
             this.name = s;
@@ -95,6 +93,16 @@ public class AddCoursePane extends JPanel {
         this.add(this.button);
     }
     
+    private void initializeChoice() {
+        List<Teacher> allTeachers = this.teacherDB.getAllTeachers();
+        allTeacherNames = new ArrayList<>();
+        teacherNameIdMap = new HashMap<>();
+        for (Teacher t : allTeachers) {
+            allTeacherNames.add(t.getName());
+            teacherNameIdMap.put(t.getName(), t.getId());
+        }
+    }
+    
     private boolean isOk() {
     	return this.namePane.isOk() 
     			&& this.roomNamePane.isOk()
@@ -116,7 +124,8 @@ public class AddCoursePane extends JPanel {
     	this.roomNamePane.reset();
     	this.dayPane.reset();
     	this.periodPane.reset();
-    	this.teacherSelectPane.reset();
+    	this.initializeChoice();
+    	this.teacherSelectPane.reset("Select a Teacher", allTeacherNames);
         this.button.setEnabled(false);
     }
 
