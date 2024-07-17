@@ -9,6 +9,7 @@ import GUI.page.AddCoursePane;
 import GUI.page.AddStudentPane;
 import GUI.page.AddTeacherPane;
 import GUI.page.AllStudentsPane;
+import GUI.page.AllTeachersPane;
 import database.CourseDB;
 
 import java.awt.event.*;
@@ -25,17 +26,20 @@ public class GUIMain {
     final private String AddTeacherPaneName = "AddTeacherPane";
     final private String AddCoursePaneName = "AddCoursePane";
     final private String AllStudentsPaneName = "AllStudentsPane";
+    final private String AllTeachersPaneName = "AllTeachersPane";
     
     private AddStudentPane addStudentPane;
     private AddTeacherPane addTeacherPane;
     private AddCoursePane addCoursePane;
     private AllStudentsPane allStudentsPane;
+    private AllTeachersPane allTeachersPane;
     
     public GUIMain(StudentDB studentDB, TeacherDB teacherDB, CourseDB courseDB) {
     	this.addStudentPane = new AddStudentPane(studentDB);
     	this.addTeacherPane = new AddTeacherPane(teacherDB);
     	this.addCoursePane = new AddCoursePane(courseDB, teacherDB);
     	this.allStudentsPane = new AllStudentsPane(studentDB, courseDB);
+    	this.allTeachersPane = new AllTeachersPane(teacherDB, courseDB);
     	this.Exec();
     }
     
@@ -53,6 +57,7 @@ public class GUIMain {
         cardPanel.add(addStudentPane, this.AddStudentPaneName);
         cardPanel.add(addCoursePane, this.AddCoursePaneName);
         cardPanel.add(allStudentsPane, this.AllStudentsPaneName);
+        cardPanel.add(allTeachersPane, this.AllTeachersPaneName);
 
         // card transitions
         JButton homeButton = new JButton("Home");
@@ -75,6 +80,10 @@ public class GUIMain {
         JButton allStudentsButton = new JButton("All Students");
         allStudentsButton.addActionListener(transitionButtonAction);
         allStudentsButton.setActionCommand(this.AllStudentsPaneName);
+        
+        JButton allTeachersButton = new JButton("All Teachers");
+        allTeachersButton.addActionListener(transitionButtonAction);
+        allTeachersButton.setActionCommand(this.AllTeachersPaneName);
 
         JPanel btnPanel = new JPanel();
         btnPanel.add(homeButton);
@@ -82,6 +91,7 @@ public class GUIMain {
         btnPanel.add(addStudentButton);
         btnPanel.add(addCourseButton);
         btnPanel.add(allStudentsButton);
+        btnPanel.add(allTeachersButton);
 
         Container contentPane = this.frame.getContentPane();
         contentPane.add(cardPanel, BorderLayout.CENTER);
@@ -114,6 +124,7 @@ public class GUIMain {
 	        GUIMain.this.addTeacherPane.reset();
 	        GUIMain.this.addCoursePane.reset();
 	        GUIMain.this.allStudentsPane.loadStudents();
+	        GUIMain.this.allTeachersPane.loadTeachers();
 	    }
     }
     
