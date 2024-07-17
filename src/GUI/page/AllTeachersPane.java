@@ -266,7 +266,7 @@ public class AllTeachersPane extends JPanel {
         			AllTeachersPane.this.loadTeachers();
         			detailFrame.dispose();
         		}
-        	}
+        	} 
         }; 
         deleteButton.addActionListener(deleteListener);
         deleteButton.setForeground(Color.red);
