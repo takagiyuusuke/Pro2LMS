@@ -67,4 +67,12 @@ public class CourseDB extends DataBase {
 			return null;
 		}
 	}
+	
+	public void deleteCourse(Course course) {
+		super.deleteItem(course.getId());
+	}
+	
+	public void deleteCourse(int id) {
+		super.deleteItem(id);
+	}
 }
