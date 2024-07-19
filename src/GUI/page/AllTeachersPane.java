@@ -131,131 +131,7 @@ public class AllTeachersPane extends JPanel {
         };
         editButton.addActionListener(editListener);
         /////////////////////////////////////////////////////////////////////////////////////////////////////
-        JButton addCourseButton = new JButton("Add Course");
-        ActionListener addCourseListener = new ActionListener() {
-        	private int courseId;
-        	public void actionPerformed(ActionEvent e) {
-        		List<Course> allCourses = AllTeachersPane.this.courseDB.getAllCourses();
-                List<String> allCourseNames = new ArrayList<String>();
-                Map<String, Integer> courseNameIdMap = new HashMap<>();
-                List<Integer> learningCourses = teacher.getCourseIds();
-                
-                allCourses.forEach((Course c) -> {
-                	if (! learningCourses.contains(c.getId())) {
-                		allCourseNames.add(c.getName());
-                		courseNameIdMap.put(c.getName(), c.getId());
-                	}
-                });
-                EntitySelect courseSelectPane = new EntitySelect("Select a Course", allCourseNames);
-        		JFrame editFrame = new JFrame("Editing " + teacher.getName());
-        		editFrame.setSize(300,150);
-        		JPanel pane = new JPanel();
-        		pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
-        		pane.add(courseSelectPane);
-        		JButton cancelButton = new JButton("cancel");
-        		JButton okButton = new JButton("OK");
-        		JPanel buttonPane = new JPanel();
-        		buttonPane.setLayout(new GridLayout(1,0));
-        		buttonPane.add(cancelButton);
-        		buttonPane.add(okButton);
-        		pane.add(buttonPane);
-        		editFrame.add(pane);
-        		editFrame.setLocation(location);
-        		okButton.setEnabled(false);
-        		courseSelectPane.setOnSelect((String s) -> {
-                	int id = courseNameIdMap.get(s);
-                	this.courseId = id;
-                	if (courseSelectPane.isOk()) okButton.setEnabled(true);
-                	else okButton.setEnabled(false);
-                });
-        		ActionListener okListener = new ActionListener() {
-        			public void actionPerformed(ActionEvent e) {
-        				teacher.addCourseId(courseId);
-        				Course addedCourse = AllTeachersPane.this.courseDB.getCourseById(courseId);
-        				listModel.addElement(addedCourse.getName());
-        				jlist.validate();
-        				AllTeachersPane.this.teacherDB.updateTeacher(teacher);
-        				addedCourse.addStudentId(teacher.getId());
-        				AllTeachersPane.this.courseDB.updateCourse(addedCourse);
-        				AllTeachersPane.this.loadTeachers();
-        				editFrame.dispose();
-        			};
-        		};
-        		okButton.addActionListener(okListener);
-        		
-        		ActionListener cancelListener = new ActionListener() {
-        			public void actionPerformed(ActionEvent e) {
-        				editFrame.dispose();
-        			};
-        		};
-        		cancelButton.addActionListener(cancelListener);
-        		editFrame.setVisible(true);
-        	}
-        };
-        addCourseButton.addActionListener(addCourseListener);
-        /////////////////////////////////////////////////////////////////////////////////////////////////////
-        JButton rmvCourseButton = new JButton("Remove Course");
-        ActionListener rmvCourseListener = new ActionListener() {
-        	private int courseId;
-        	public void actionPerformed(ActionEvent e) {
-        		List<Course> allCourses = AllTeachersPane.this.courseDB.getAllCourses();
-                List<String> allCourseNames = new ArrayList<String>();
-                Map<String, Integer> courseNameIdMap = new HashMap<>();
-                List<Integer> learningCourses = teacher.getCourseIds();
-   
-                allCourses.forEach((Course c) -> {
-                	if (learningCourses.contains(c.getId())) {
-                		allCourseNames.add(c.getName());
-                		courseNameIdMap.put(c.getName(), c.getId());
-                	}
-                });
-                EntitySelect courseSelectPane = new EntitySelect("Select a Course", allCourseNames);
-        		JFrame editFrame = new JFrame("Editing " + teacher.getName());
-        		editFrame.setSize(300,150);
-        		JPanel pane = new JPanel();
-        		pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
-        		pane.add(courseSelectPane);
-        		JButton cancelButton = new JButton("cancel");
-        		JButton okButton = new JButton("OK");
-        		JPanel buttonPane = new JPanel();
-        		buttonPane.setLayout(new GridLayout(1,0));
-        		buttonPane.add(cancelButton);
-        		buttonPane.add(okButton);
-        		pane.add(buttonPane);
-        		editFrame.add(pane);
-        		editFrame.setLocation(location);
-        		okButton.setEnabled(false);
-        		courseSelectPane.setOnSelect((String s) -> {
-                	int id = courseNameIdMap.get(s);
-                	this.courseId = id;
-                	if (courseSelectPane.isOk()) okButton.setEnabled(true);
-                	else okButton.setEnabled(false);
-                });
-        		ActionListener okListener = new ActionListener() {
-        			public void actionPerformed(ActionEvent e) {
-        				teacher.removeCourseId(courseId);
-        				Course removedCourse = AllTeachersPane.this.courseDB.getCourseById(courseId);
-        				listModel.removeElement(removedCourse.getName());
-        				jlist.validate();
-        				AllTeachersPane.this.teacherDB.updateTeacher(teacher);
-        				removedCourse.removeStudentId(teacher.getId());
-        				AllTeachersPane.this.courseDB.updateCourse(removedCourse);
-        				AllTeachersPane.this.loadTeachers();
-        				editFrame.dispose();
-        			};
-        		};
-        		okButton.addActionListener(okListener);
-        		
-        		ActionListener cancelListener = new ActionListener() {
-        			public void actionPerformed(ActionEvent e) {
-        				editFrame.dispose();
-        			};
-        		};
-        		cancelButton.addActionListener(cancelListener);
-        		editFrame.setVisible(true);
-        	}
-        };
-        rmvCourseButton.addActionListener(rmvCourseListener);
+
         /////////////////////////////////////////////////////////////////////////////////////////////////////
         JButton deleteButton = new JButton("Delete Teacher");
         ActionListener deleteListener = new ActionListener() {
@@ -274,8 +150,6 @@ public class AllTeachersPane extends JPanel {
         JPanel subPane = new JPanel();
         subPane.setLayout(new GridLayout(1, 0));
         subPane.add(deleteButton);
-        subPane.add(rmvCourseButton);
-        subPane.add(addCourseButton);
         subPane.add(editButton);
         
 		pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));

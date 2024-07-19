@@ -43,7 +43,7 @@ public class GUIMain {
     	this.addCoursePane = new AddCoursePane(courseDB, teacherDB);
     	this.allStudentsPane = new AllStudentsPane(studentDB, courseDB);
     	this.allTeachersPane = new AllTeachersPane(teacherDB, courseDB);
-    	this.allCoursesPane = new AllCoursesPane(courseDB);
+    	this.allCoursesPane = new AllCoursesPane(courseDB, teacherDB, studentDB);
     	this.Exec();
     }
     

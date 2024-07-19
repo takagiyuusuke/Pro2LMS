@@ -6,21 +6,30 @@ import java.awt.*;
 import java.awt.event.*;
 
 import database.CourseDB;
+import database.TeacherDB;
+import database.StudentDB;
 import entities.Course;
+import entities.Teacher;
+import entities.Student;
 import GUI.components.NameField;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("serial")
 public class AllCoursesPane extends JPanel {
 	private CourseDB courseDB;
+	private TeacherDB teacherDB;
+	private StudentDB studentDB;
 	private String[] columnNames = {"Course ID", "Name"};
 	private List<Course> courses;
 	private DefaultTableModel model = new DefaultTableModel(columnNames, 0);
 
-	public AllCoursesPane(CourseDB courseDB) {
+	public AllCoursesPane(CourseDB courseDB, TeacherDB teacherDB, StudentDB studentDB) {
 		super();
 		this.courseDB = courseDB;
+		this.teacherDB = teacherDB;
+		this.studentDB = studentDB;
 		
 		this.loadCourses();
 		
@@ -57,11 +66,22 @@ public class AllCoursesPane extends JPanel {
 	}
 	
 	private void showDetailFrame(Course course, Point location) {
+		Teacher teacher = teacherDB.getTeacherById(course.getTeacherId());
         JFrame detailFrame = new JFrame("Information about " + course.getName());
         JLabel label = new JLabel("Name: " + course.getName());
         JLabel label2 = new JLabel("Course ID: " + course.getId());
-        JLabel label3 = new JLabel("Room Name: " + course.getRoomId());
+        JLabel label3 = new JLabel("Teacher Name: " + teacher.getName());
+        JLabel label4 = new JLabel("Room Name: " + course.getRoomId());
+        JLabel label5 = new JLabel("Students:");
         JPanel pane = new JPanel();
+        List<Integer> allStudentsName = course.getStudentIds();
+        List<String> stringList = new ArrayList<String>();
+        for (Integer id: allStudentsName) {
+        	stringList.add(studentDB.getStudentById(id).getName());
+        }
+        DefaultListModel<String> listModel = new DefaultListModel<>();
+        for (String s : stringList) listModel.addElement(s);
+		JList<String> jlist = new JList<>(listModel);
         /////////////////////////////////////////////////////////////////////////////////////////////////////
         JButton editButton = new JButton("Edit Name");
         
@@ -189,6 +209,9 @@ public class AllCoursesPane extends JPanel {
         pane.add(label);
         pane.add(label2);
         pane.add(label3);
+        pane.add(label4);
+        pane.add(label5);
+        pane.add(new JScrollPane(jlist));
         pane.add(subPane);
         detailFrame.add(pane);
         detailFrame.setSize(600, 200);
