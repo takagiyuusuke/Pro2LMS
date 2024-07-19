@@ -1,8 +1,7 @@
 package database;
 
 import java.util.*;
-import entities.Course;
-import entities.Teacher;
+import entities.*;
 
 public class CourseDB extends DataBase {
 	final private static List<String> HEADERS = new ArrayList<String>(Arrays.asList("id", "name", "roomName", "day", "period", "teacherId", "studentIds"));
@@ -10,6 +9,7 @@ public class CourseDB extends DataBase {
 	final private Map<String, Integer> HEADER_COL_INDICES =  new HashMap<>();
 	private static int LATEST_ID = 0;
 	private TeacherDB teacherDB;
+	private StudentDB studentDB;
 	
 	public CourseDB() {
 		super(ENTITY_NAME, HEADERS);
@@ -30,6 +30,10 @@ public class CourseDB extends DataBase {
 	
 	public void setTeacherDB(TeacherDB teacherDB) {
 		this.teacherDB = teacherDB;
+	}
+	
+	public void setStudentDB(StudentDB studentDB) {
+		this.studentDB = studentDB;
 	}
 	
 	public Course getCourseById(int id) {
@@ -69,10 +73,17 @@ public class CourseDB extends DataBase {
 	}
 	
 	public void deleteCourse(Course course) {
-		super.deleteItem(course.getId());
+		int removeId = course.getId();
+		super.deleteItem(removeId);
+		Teacher teacher = this.teacherDB.getTeacherById(course.getTeacherId());
+		teacher.removeCourseId(course.getId());
+		this.teacherDB.updateTeacher(teacher);
+		ArrayList<Integer> studentIds = course.getStudentIds();
+		for (int i = 0; i < studentIds.size(); i ++) {
+			Student student = this.studentDB.getStudentById(studentIds.get(i));
+			student.removeCourseId(removeId);
+			this.studentDB.updateStudent(student);
+		}
 	}
 	
-	public void deleteCourse(int id) {
-		super.deleteItem(id);
-	}
 }

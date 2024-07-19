@@ -262,6 +262,14 @@ public class AllStudentsPane extends JPanel {
         	public void actionPerformed(ActionEvent e) {
         		int answer = JOptionPane.showConfirmDialog(detailFrame, "Really Delete " + student.getName() + "?", "Confirming Deletion of Student", JOptionPane.YES_NO_OPTION);
         		if (answer == JOptionPane.YES_OPTION) {
+        			List<Course> allCourses = AllStudentsPane.this.courseDB.getAllCourses();
+        			for (int i = 0; i < allCourses.size(); i ++) {
+        				Course course = allCourses.get(i);
+        				if (course.getStudentIds().contains(student.getId())) {
+        					course.removeStudentId(student.getId());
+        					AllStudentsPane.this.courseDB.updateCourse(course);
+        				}
+        			}
         			AllStudentsPane.this.studentDB.deleteStudent(student);
         			AllStudentsPane.this.loadStudents();
         			detailFrame.dispose();
