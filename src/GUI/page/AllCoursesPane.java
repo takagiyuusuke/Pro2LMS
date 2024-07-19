@@ -195,7 +195,7 @@ public class AllCoursesPane extends JPanel {
         	public void actionPerformed(ActionEvent e) {
         		DayField dayField = new DayField("New Day");
         		JFrame editFrame = new JFrame("Editing " + course.getName());
-        		editFrame.setSize(300,150);
+        		editFrame.setSize(600,200);
         		JPanel pane = new JPanel();
         		pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
         		pane.add(dayField);
@@ -322,7 +322,7 @@ public class AllCoursesPane extends JPanel {
         pane.add(new JScrollPane(jlist));
         pane.add(subPane);
         detailFrame.add(pane);
-        detailFrame.setSize(600, 200);
+        detailFrame.setSize(800, 200);
         detailFrame.setLocation(location);
         detailFrame.setVisible(true);
         
