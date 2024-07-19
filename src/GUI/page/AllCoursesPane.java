@@ -12,6 +12,8 @@ import entities.Course;
 import entities.Teacher;
 import entities.Student;
 import GUI.components.NameField;
+import GUI.components.DayField;
+import GUI.components.PeriodField;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,11 +70,12 @@ public class AllCoursesPane extends JPanel {
 	private void showDetailFrame(Course course, Point location) {
 		Teacher teacher = teacherDB.getTeacherById(course.getTeacherId());
         JFrame detailFrame = new JFrame("Information about " + course.getName());
-        JLabel label = new JLabel("Name: " + course.getName());
-        JLabel label2 = new JLabel("Course ID: " + course.getId());
-        JLabel label3 = new JLabel("Teacher Name: " + teacher.getName());
-        JLabel label4 = new JLabel("Room Name: " + course.getRoomId());
-        JLabel label5 = new JLabel("Students:");
+        JLabel label = new JLabel("Course ID: " + course.getId());
+        JLabel label2 = new JLabel("Name: " + course.getName());
+        JLabel label3 = new JLabel("Room Name: " + course.getRoomId());
+        JLabel label4 = new JLabel("Day / Period: " + course.getDay() + "/" + course.getPeriod());
+        JLabel label5 = new JLabel("Teacher Name: " + teacher.getName());
+        JLabel label6 = new JLabel("Students:");
         JPanel pane = new JPanel();
         List<Integer> allStudentsName = course.getStudentIds();
         List<String> stringList = new ArrayList<String>();
@@ -115,7 +118,7 @@ public class AllCoursesPane extends JPanel {
         		ActionListener okListener = new ActionListener() {
         			public void actionPerformed(ActionEvent e) {
         				course.setName(name);
-        				label.setText("Name: " + course.getName());
+        				label2.setText("Name: " + course.getName());
         				AllCoursesPane.this.courseDB.updateCourse(course);
         				AllCoursesPane.this.loadCourses();
         				editFrame.dispose();
@@ -185,6 +188,108 @@ public class AllCoursesPane extends JPanel {
         };
         editRoomButton.addActionListener(editRoomListener);
         /////////////////////////////////////////////////////////////////////////////////////////////////////
+        JButton editDayButton = new JButton("Edit Day");
+        
+        ActionListener editDayListener = new ActionListener() {
+        	private String day;
+        	public void actionPerformed(ActionEvent e) {
+        		DayField dayField = new DayField("New Day");
+        		JFrame editFrame = new JFrame("Editing " + course.getName());
+        		editFrame.setSize(300,150);
+        		JPanel pane = new JPanel();
+        		pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
+        		pane.add(dayField);
+        		JButton cancelButton = new JButton("cancel");
+        		JButton okButton = new JButton("OK");
+        		JPanel buttonPane = new JPanel();
+        		buttonPane.setLayout(new GridLayout(1,0));
+        		buttonPane.add(cancelButton);
+        		buttonPane.add(okButton);
+        		pane.add(buttonPane);
+        		editFrame.add(pane);
+        		editFrame.setLocation(location);
+        		okButton.setEnabled(false);
+        		dayField.setOnTextChanged((String s) -> {
+                    this.day = s;
+                    if (dayField.isOk()) {
+                        okButton.setEnabled(true);
+                    } else {
+                        okButton.setEnabled(false);
+                    }
+                });
+        		ActionListener okListener = new ActionListener() {
+        			public void actionPerformed(ActionEvent e) {
+        				course.setDay(day);
+        				label4.setText("Day / Period: " + course.getDay() + "/" + course.getPeriod());
+        				AllCoursesPane.this.courseDB.updateCourse(course);
+        				AllCoursesPane.this.loadCourses();
+        				editFrame.dispose();
+        			};
+        		};
+        		okButton.addActionListener(okListener);
+        		
+        		ActionListener cancelListener = new ActionListener() {
+        			public void actionPerformed(ActionEvent e) {
+        				editFrame.dispose();
+        			};
+        		};
+        		cancelButton.addActionListener(cancelListener);
+        		editFrame.setVisible(true);
+        	}
+        };
+        editDayButton.addActionListener(editDayListener);
+        /////////////////////////////////////////////////////////////////////////////////////////////////////
+        JButton editPeriodButton = new JButton("Edit Period");
+        
+        ActionListener editPeriodListener = new ActionListener() {
+        	private int period;
+        	public void actionPerformed(ActionEvent e) {
+        		PeriodField periodField = new PeriodField("New Period");
+        		JFrame editFrame = new JFrame("Editing " + course.getName());
+        		editFrame.setSize(300,150);
+        		JPanel pane = new JPanel();
+        		pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
+        		pane.add(periodField);
+        		JButton cancelButton = new JButton("cancel");
+        		JButton okButton = new JButton("OK");
+        		JPanel buttonPane = new JPanel();
+        		buttonPane.setLayout(new GridLayout(1,0));
+        		buttonPane.add(cancelButton);
+        		buttonPane.add(okButton);
+        		pane.add(buttonPane);
+        		editFrame.add(pane);
+        		editFrame.setLocation(location);
+        		okButton.setEnabled(false);
+        		periodField.setOnTextChanged((Integer s) -> {
+                    this.period = s;
+                    if (periodField.isOk()) {
+                        okButton.setEnabled(true);
+                    } else {
+                        okButton.setEnabled(false);
+                    }
+                });
+        		ActionListener okListener = new ActionListener() {
+        			public void actionPerformed(ActionEvent e) {
+        				course.setPeriod(period);
+        				label4.setText("Day / Period: " + course.getDay() + "/" + course.getPeriod());
+        				AllCoursesPane.this.courseDB.updateCourse(course);
+        				AllCoursesPane.this.loadCourses();
+        				editFrame.dispose();
+        			};
+        		};
+        		okButton.addActionListener(okListener);
+        		
+        		ActionListener cancelListener = new ActionListener() {
+        			public void actionPerformed(ActionEvent e) {
+        				editFrame.dispose();
+        			};
+        		};
+        		cancelButton.addActionListener(cancelListener);
+        		editFrame.setVisible(true);
+        	}
+        };
+        editPeriodButton.addActionListener(editPeriodListener);
+        /////////////////////////////////////////////////////////////////////////////////////////////////////
         JButton deleteButton = new JButton("Delete Course");
         ActionListener deleteListener = new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
@@ -204,6 +309,8 @@ public class AllCoursesPane extends JPanel {
         subPane.add(deleteButton);
         subPane.add(editRoomButton);
         subPane.add(editButton);
+        subPane.add(editDayButton);
+        subPane.add(editPeriodButton);
         
 		pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
         pane.add(label);
@@ -211,6 +318,7 @@ public class AllCoursesPane extends JPanel {
         pane.add(label3);
         pane.add(label4);
         pane.add(label5);
+        pane.add(label6);
         pane.add(new JScrollPane(jlist));
         pane.add(subPane);
         detailFrame.add(pane);
