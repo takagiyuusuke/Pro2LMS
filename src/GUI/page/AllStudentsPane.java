@@ -265,8 +265,9 @@ public class AllStudentsPane extends JPanel {
         			List<Course> allCourses = AllStudentsPane.this.courseDB.getAllCourses();
         			for (int i = 0; i < allCourses.size(); i ++) {
         				Course course = allCourses.get(i);
-        				if (course.getTeacherId() == student.getId()) {
-        					AllStudentsPane.this.courseDB.deleteCourse(course);
+        				if (course.getStudentIds().contains(student.getId())) {
+        					course.removeStudentId(student.getId());
+        					AllStudentsPane.this.courseDB.updateCourse(course);
         				}
         			}
         			AllStudentsPane.this.studentDB.deleteStudent(student);
