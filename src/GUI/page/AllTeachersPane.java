@@ -142,9 +142,7 @@ public class AllTeachersPane extends JPanel {
         			for (int i = 0; i < allCourses.size(); i ++) {
         				Course course = allCourses.get(i);
         				if (course.getTeacherId() == teacher.getId()) {
-        					Teacher teacher = AllTeachersPane.this.teacherDB.getTeacherById(course.getTeacherId());
-        					teacher.removeCourseId(course.getId());
-        					AllTeachersPane.this.teacherDB.updateTeacher(teacher);
+        					AllTeachersPane.this.courseDB.deleteCourse(course);
         				}
         			}
         			AllTeachersPane.this.teacherDB.deleteTeacher(teacher);
