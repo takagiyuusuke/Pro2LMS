@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import entities.Student;
 import entities.Teacher;
 
 public class TeacherDB extends DataBase {
@@ -49,5 +50,13 @@ public class TeacherDB extends DataBase {
 		} else {
 			return null;
 		}
+	}
+	
+	public void deleteTeacher(Teacher teacher) {
+		super.deleteItem(teacher.getId());
+	}
+	
+	public void deleteTeacher(int id) {
+		super.deleteItem(id);
 	}
 }

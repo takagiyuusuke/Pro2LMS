@@ -11,7 +11,7 @@ public class Main {
 		TeacherDB teacherDB = new TeacherDB();
 		CourseDB courseDB = new CourseDB();
 		courseDB.setTeacherDB(teacherDB);
-		
+		 
 		studentDB.clear();
 		teacherDB.clear();
 		courseDB.clear();
