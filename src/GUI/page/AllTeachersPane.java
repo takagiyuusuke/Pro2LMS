@@ -138,6 +138,15 @@ public class AllTeachersPane extends JPanel {
         	public void actionPerformed(ActionEvent e) {
         		int answer = JOptionPane.showConfirmDialog(detailFrame, "Really Delete " + teacher.getName() + "?", "Confirming Deletion of Teacher", JOptionPane.YES_NO_OPTION);
         		if (answer == JOptionPane.YES_OPTION) {
+        			List<Course> allCourses = AllTeachersPane.this.courseDB.getAllCourses();
+        			for (int i = 0; i < allCourses.size(); i ++) {
+        				Course course = allCourses.get(i);
+        				if (course.getTeacherId() == teacher.getId()) {
+        					Teacher teacher = AllTeachersPane.this.teacherDB.getTeacherById(course.getTeacherId());
+        					teacher.removeCourseId(course.getId());
+        					AllTeachersPane.this.teacherDB.updateTeacher(teacher);
+        				}
+        			}
         			AllTeachersPane.this.teacherDB.deleteTeacher(teacher);
         			AllTeachersPane.this.loadTeachers();
         			detailFrame.dispose();
