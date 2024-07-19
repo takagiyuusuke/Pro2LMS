@@ -50,6 +50,8 @@ public class GUIMain {
     public void Exec () {
     	
     	JPanel HomePane = new JPanel();
+    	HomePane.add(new JLabel("Pro2 LMS  Created by Takagi Yusuke, Nakamoto Koichi, Seno Koki"));
+    	HomePane.setLayout(new GridLayout(1,0));
 
         // CardLayout
         cardPanel = new JPanel();
